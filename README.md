@@ -62,19 +62,17 @@ bookmark --remove
 
 ### Navigating to Bookmarks
 
-**List and navigate to bookmarks:**
+**Navigate to bookmarks using the goto function:**
 
 ```bash
-./goto
-# or if you set up the function:
 goto
 ```
 
 This will:
 
 1. Show all bookmarked directories with numbers
-2. Prompt you to select a number
-3. Change to the selected directory
+2. Prompt you to select a number  
+3. Change to the selected directory in your current shell session
 
 **Navigate to bookmarks (for shell scripting):**
 
@@ -196,13 +194,12 @@ python3 bookmark.py --listall
 - `bookmark --listall` - Display all bookmarks with their full paths
 - `bookmark --debug` - Open bookmarks file in VS Code for editing
 - `bookmark --flush` - Clear all bookmarks permanently
-- `goto` - Navigate to bookmarked directory (interactive shell function)
+- `goto` - Navigate to bookmarked directory (shell function that changes current directory)
 
 ## File Structure
 
 - `bookmark.py` - Main script with all bookmark management and navigation features
-- `goto.sh` - Shell script wrapper for directory navigation
-- `goto_function.sh` - Shell function for better directory changing (uses bookmark --go)
+- `goto_function.sh` - Shell function for directory navigation (uses bookmark --go)
 - `~/.dir-bookmarks.txt` - Storage file for bookmarks (auto-created)
 
 ## Storage Format
