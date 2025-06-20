@@ -215,26 +215,14 @@ class BookmarkManager:
             "'code' command not found. Please ensure VS Code is installed and 'code' command is available in PATH.",
         )
 
-    def _handle_file_operation(self, operation, success_msg, error_prefix="Error"):
-        # Handle file operations with error handling
-        try:
-            operation()
-            print(success_msg, file=sys.stderr)
-            return True
-        except Exception as e:
-            print(f"{error_prefix}: {e}", file=sys.stderr)
-            return False
-
     def flush_bookmarks(self):
         # Clear all bookmarks from the file
-
-        def clear_file():
+        try:
             with open(self.bookmark_file, "w") as f:
                 pass  # Just create/truncate the file
-
-        self._handle_file_operation(
-            clear_file, "All bookmarks have been cleared.", "Error clearing bookmarks"
-        )
+            print("All bookmarks have been cleared.", file=sys.stderr)
+        except Exception as e:
+            print(f"Error clearing bookmarks: {e}", file=sys.stderr)
 
     def listall_bookmarks(self):
         # List all bookmarks with their full paths
