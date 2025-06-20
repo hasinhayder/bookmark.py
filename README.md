@@ -201,7 +201,7 @@ python3 bookmark.py --listall
 ## File Structure
 
 - `bookmark.py` - Main script with all bookmark management and navigation features
-- `goto` - Shell script wrapper for directory navigation
+- `goto.sh` - Shell script wrapper for directory navigation
 - `goto_function.sh` - Shell function for better directory changing (uses bookmark --go)
 - `~/.dir-bookmarks.txt` - Storage file for bookmarks (auto-created)
 
