@@ -1,8 +1,13 @@
 #!/bin/bash
 # Test script for Directory Bookmark Manager
+# Author: Hasin Hayder
+# Repository: https://github.com/hasinhayder/bookomark.py
 
 echo "Testing Directory Bookmark Manager"
 echo "=================================="
+echo "Author: Hasin Hayder"
+echo "Repository: https://github.com/hasinhayder/bookomark.py"
+echo ""
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 

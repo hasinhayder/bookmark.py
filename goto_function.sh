@@ -2,6 +2,8 @@
 # Function-based goto that works with current shell session
 
 # Directory Bookmark Manager - Goto Function
+# Author: Hasin Hayder
+# Repository: https://github.com/hasinhayder/bookomark.py
 # This script should be sourced, not executed directly
 
 goto() {

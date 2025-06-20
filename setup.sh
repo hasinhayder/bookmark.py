@@ -1,5 +1,7 @@
 #!/bin/bash
 # Setup script for Directory Bookmark Manager v2.0
+# Author: Hasin Hayder
+# Repository: https://github.com/hasinhayder/bookomark.py
 
 VERSION="2.0"
 
@@ -18,6 +20,8 @@ fi
 
 echo "Directory Bookmark Manager Setup v$VERSION"
 echo "========================================="
+echo "Author: Hasin Hayder"
+echo "Repository: https://github.com/hasinhayder/bookomark.py"
 echo ""
 echo "This will add the bookmark commands to your shell configuration."
 echo "Shell config file: $SHELL_CONFIG"

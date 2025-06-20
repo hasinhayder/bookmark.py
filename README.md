@@ -2,51 +2,69 @@
 
 A command-line tool to bookmark directories and quickly navigate between them.
 
+**Author:** Hasin Hayder  
+**Repository:** https://github.com/hasinhayder/bookomark.py
+
+## Quick Start
+
+1. Clone or download this repository
+2. Run the setup script: `./setup.sh`
+3. Restart your terminal or run `source ~/.zshrc`
+4. Start bookmarking: `bookmark` and navigating: `goto`
+
 ## Features
 
 - Save current directory with a friendly name
 - Remove bookmarks for current directory
 - List all bookmarks in alphabetical order
-- Navigate to bookmarked directories by selecting a number
+- Navigate to bookmarked directories using `goto` function
+- Open bookmarked directories in Finder (macOS)
+- Debug bookmarks file in VS Code
+- Bulk operations (list all, flush all)
 - Duplicate prevention for both paths and names
+- Automatic setup script for easy installation
 
 ## Installation
 
-1. Copy the files to a directory in your PATH or use them from the current location
-2. Make the scripts executable (already done):
+**Easy Setup (Recommended):**
 
-   ```bash
-   chmod +x bookmark.py goto.py goto
-   ```
+Run the setup script to automatically configure everything:
 
-3. For the `goto` command to work properly, you have two options:
+```bash
+./setup.sh
+```
 
-   **Option A: Add to your shell profile (Recommended)**
-   Add this line to your `~/.zshrc` (or `~/.bashrc` if using bash):
+This will:
 
-   ```bash
-   source /path/to/commandline/goto_function.sh
-   ```
+- Add the `bookmark` alias to your shell configuration
+- Source the `goto_function.sh` to enable the `goto` command
+- Configure everything for immediate use
 
-   Then reload your shell: `source ~/.zshrc`
+After setup, either restart your terminal or run:
 
-   **Option B: Create aliases**
-   Add these aliases to your `~/.zshrc`:
+```bash
+source ~/.zshrc  # or ~/.bashrc for bash users
+```
 
-   ```bash
-   alias bookmark='/path/to/commandline/bookmark.py'
-   alias goto='source /path/to/commandline/goto_function.sh && goto'
-   ```
+**Manual Setup (Advanced):**
+
+If you prefer manual installation, add these lines to your `~/.zshrc` (or `~/.bashrc` for bash):
+
+```bash
+# Directory Bookmark Manager
+alias bookmark='python3 /path/to/bookmark.py'
+source /path/to/goto_function.sh
+```
 
 ## Usage
+
+After running `./setup.sh`, you can use these commands from anywhere:
 
 ### Bookmarking Directories
 
 **Add a bookmark for current directory:**
 
 ```bash
-python3 bookmark.py
-# or if you set up aliases:
 bookmark
 ```
 
@@ -55,8 +73,6 @@ You'll be prompted to enter a friendly name for the current directory.
 **Remove bookmark for current directory:**
 
 ```bash
-python3 bookmark.py --remove
-# or if you set up aliases:
 bookmark --remove
 ```
 
@@ -74,59 +90,31 @@ This will:
 2. Prompt you to select a number
 3. Change to the selected directory in your current shell session
 
-**Navigate to bookmarks (for shell scripting):**
+### Additional Commands
+
+**List bookmarks and select one (for scripting):**
 
 ```bash
-python3 bookmark.py --go
-# or if you set up aliases:
-bookmark --go
-```
-
-This will:
-
-1. Show all bookmarked directories with names in lowercase
-2. Display them sorted alphabetically with numbers
-3. Prompt you to select a number
-4. Echo the corresponding directory path (used by goto shell function)
-
-**List all bookmarks and select one:**
-
-```bash
-python3 bookmark.py --list
-# or if you set up aliases:
 bookmark --list
 ```
 
-This will:
-
-1. Show all bookmarked directories with names in lowercase
-2. Display them sorted alphabetically with numbers
-3. Prompt you to select a number
-4. Echo the corresponding directory path
-
-**Open bookmark in Finder:**
+**Get directory path for shell navigation:**
 
 ```bash
-python3 bookmark.py --open
-# or if you set up aliases:
-bookmark --open
+bookmark --go
 ```
 
-This will:
+**Open bookmark in Finder (macOS):**
 
-1. Show all bookmarked directories with names in lowercase
-2. Display them sorted alphabetically with numbers
-3. Prompt you to select a number
-4. Echo the corresponding directory path
-5. Open the selected directory in Finder (macOS only)
+```bash
+bookmark --open
+```
 
 ### Debugging and Maintenance
 
 **Debug bookmarks file:**
 
 ```bash
-python3 bookmark.py --debug
-# or if you set up aliases:
 bookmark --debug
 ```
 
@@ -135,8 +123,6 @@ This opens the `~/.dir-bookmarks.txt` file in VS Code for manual editing or debu
 **Clear all bookmarks:**
 
 ```bash
-python3 bookmark.py --flush
-# or if you set up aliases:
 bookmark --flush
 ```
 
@@ -145,8 +131,6 @@ This permanently deletes all bookmarks from the file.
 **List all bookmarks with paths:**
 
 ```bash
-python3 bookmark.py --listall
-# or if you set up aliases:
 bookmark --listall
 ```
 
@@ -156,7 +140,7 @@ This displays all bookmarks with their full directory paths and a total count.
 
 ```bash
 # Open a bookmark in Finder
-python3 bookmark.py --open
+bookmark --open
 # Shows:
 # 1. docs
 # 2. myapp
@@ -169,15 +153,15 @@ python3 bookmark.py --open
 
 ```bash
 # Debug bookmarks file
-python3 bookmark.py --debug
+bookmark --debug
 # Opens ~/.dir-bookmarks.txt in VS Code
 
 # Clear all bookmarks
-python3 bookmark.py --flush
+bookmark --flush
 # Removes all bookmarks permanently
 
 # List all bookmarks with paths
-python3 bookmark.py --listall
+bookmark --listall
 # Shows:
 # 1. docs -> /Users/username/Documents/Important
 # 2. myapp -> /Users/username/Projects/MyApp
@@ -200,6 +184,8 @@ python3 bookmark.py --listall
 
 - `bookmark.py` - Main script with all bookmark management and navigation features
 - `goto_function.sh` - Shell function for directory navigation (uses bookmark --go)
+- `setup.sh` - Automated setup script for easy installation
+- `test.sh` - Test script to verify all functionality works
 - `~/.dir-bookmarks.txt` - Storage file for bookmarks (auto-created)
 
 ## Storage Format
@@ -215,26 +201,13 @@ friendly_name|/full/path/to/directory
 ```bash
 # Navigate to your projects directory
 cd ~/Projects/MyApp
-python3 bookmark.py
+bookmark
 # Enter: "myapp"
 
 # Navigate to another directory
 cd ~/Documents/Important
-python3 bookmark.py
+bookmark
 # Enter: "docs"
-
-# Later, from anywhere:
-goto
-# Shows:
-# 1. docs
-# 2. myapp
-# Select: 2
-# Changes to ~/Projects/MyApp
-
-# Remove a bookmark
-cd ~/Projects/MyApp
-python3 bookmark.py --remove
-# Removes the "myapp" bookmark
 
 # Navigate using goto function
 goto
@@ -244,27 +217,29 @@ goto
 # Select: 2
 # Changes to ~/Projects/MyApp
 
+# Remove a bookmark
+cd ~/Projects/MyApp
+bookmark --remove
+# Removes the "myapp" bookmark
+
 # Get directory path for scripting
-python3 bookmark.py --go
+bookmark --go
 # Shows:
 # 1. docs
-# 2. myapp
 # Select: 1
 # Outputs: /Users/username/Documents/Important
 
 # List all bookmarks and get a path
-python3 bookmark.py --list
+bookmark --list
 # Shows:
 # 1. docs
-# 2. myapp
 # Select: 1
 # Outputs: /Users/username/Documents/Important
 
 # Open a bookmark in Finder
-python3 bookmark.py --open
+bookmark --open
 # Shows:
 # 1. docs
-# 2. myapp
 # Select: 1
 # Outputs: /Users/username/Documents/Important
 # Opens the directory in Finder
@@ -277,3 +252,9 @@ python3 bookmark.py --open
 - Validates directory existence when navigating
 - Handles file I/O errors gracefully
 - Input validation for user selections
+
+## Author & Repository
+
+**Author:** Hasin Hayder  
+**GitHub:** https://github.com/hasinhayder/bookomark.py  
+**License:** Open source - feel free to contribute or fork!

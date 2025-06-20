@@ -2,6 +2,9 @@
 """
 Directory Bookmark Manager
 Saves and manages directory bookmarks in ~/.dir-bookmarks.txt
+
+Author: Hasin Hayder
+Repository: https://github.com/hasinhayder/bookomark.py
 """
 
 import os
@@ -253,6 +256,8 @@ class BookmarkManager:
         help_text = """
 Directory Bookmark Manager v2.0
 ===============================
+Author: Hasin Hayder
+Repository: https://github.com/hasinhayder/bookomark.py
 
 USAGE:
     bookmark [OPTION]
