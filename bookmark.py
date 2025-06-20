@@ -19,7 +19,7 @@ class BookmarkManager:
         self.current_dir = os.getcwd()
 
     def load_bookmarks(self):
-        """Load existing bookmarks from file"""
+        # Load existing bookmarks from file
         bookmarks = {}
         if self.bookmark_file.exists():
             try:
@@ -34,7 +34,7 @@ class BookmarkManager:
         return bookmarks
 
     def save_bookmarks(self, bookmarks):
-        """Save bookmarks to file"""
+        # Save bookmarks to file
         try:
             with open(self.bookmark_file, "w") as f:
                 for path, name in bookmarks.items():
@@ -45,7 +45,7 @@ class BookmarkManager:
         return True
 
     def add_bookmark(self):
-        """Add current directory as bookmark"""
+        # Add current directory as bookmark
         bookmarks = self.load_bookmarks()
 
         # Check if current directory is already bookmarked
@@ -84,7 +84,7 @@ class BookmarkManager:
             print("Failed to save bookmark.")
 
     def remove_bookmark(self):
-        """Remove bookmark for current directory"""
+        # Remove bookmark for current directory
         bookmarks = self.load_bookmarks()
 
         if self.current_dir not in bookmarks:
@@ -100,14 +100,14 @@ class BookmarkManager:
             print("Failed to remove bookmark.")
 
     def _get_sorted_bookmark_list(self):
-        """Get sorted list of bookmarks as (name, path) tuples"""
+        # Get sorted list of bookmarks as (name, path) tuples
         bookmarks = self.load_bookmarks()
         bookmark_list = [(name, path) for path, name in bookmarks.items()]
         bookmark_list.sort(key=lambda x: x[0].lower())
         return bookmark_list
 
     def _check_bookmarks_exist(self):
-        """Check if bookmarks exist and show message if empty"""
+        # Check if bookmarks exist and show message if empty
         bookmarks = self.load_bookmarks()
         if not bookmarks:
             print("No bookmarks found.", file=sys.stderr)
@@ -118,7 +118,7 @@ class BookmarkManager:
     def _display_bookmark_menu(
         self, title="Bookmarked directories", width=40, show_lowercase=True
     ):
-        """Display bookmarks menu with numbers"""
+        # Display bookmarks menu with numbers
         bookmark_list = self._get_sorted_bookmark_list()
 
         print(f"{title}:", file=sys.stderr)
@@ -132,7 +132,7 @@ class BookmarkManager:
     def _get_user_selection(
         self, bookmark_list, prompt="Select a directory (number): "
     ):
-        """Get user selection from bookmark list"""
+        # Get user selection from bookmark list
         try:
             print(prompt, end="", file=sys.stderr)
             sys.stderr.flush()
@@ -159,7 +159,7 @@ class BookmarkManager:
             return None
 
     def list_bookmarks(self):
-        """List all bookmarks and allow selection by number"""
+        # List all bookmarks and allow selection by number
         if not self._check_bookmarks_exist():
             return
 
@@ -170,7 +170,7 @@ class BookmarkManager:
             print(selected_path)
 
     def open_bookmark(self):
-        """List all bookmarks, allow selection, and open in Finder"""
+        # List all bookmarks, allow selection, and open in Finder
         if not self._check_bookmarks_exist():
             return
 
@@ -197,7 +197,7 @@ class BookmarkManager:
             )
 
     def _run_command(self, command, success_msg, error_msg_prefix, not_found_msg):
-        """Run a subprocess command with error handling"""
+        # Run a subprocess command with error handling
         try:
             subprocess.run(command, check=True)
             print(success_msg, file=sys.stderr)
@@ -207,7 +207,7 @@ class BookmarkManager:
             print(not_found_msg, file=sys.stderr)
 
     def debug_bookmarks(self):
-        """Open the bookmarks file in VS Code for debugging"""
+        # pen the bookmarks file in VS Code for debugging
         self._run_command(
             ["code", str(self.bookmark_file)],
             f"Opened '{self.bookmark_file}' in VS Code",
@@ -216,7 +216,7 @@ class BookmarkManager:
         )
 
     def _handle_file_operation(self, operation, success_msg, error_prefix="Error"):
-        """Handle file operations with error handling"""
+        # Handle file operations with error handling
         try:
             operation()
             print(success_msg, file=sys.stderr)
@@ -226,7 +226,7 @@ class BookmarkManager:
             return False
 
     def flush_bookmarks(self):
-        """Clear all bookmarks from the file"""
+        # Clear all bookmarks from the file
 
         def clear_file():
             with open(self.bookmark_file, "w") as f:
@@ -237,7 +237,7 @@ class BookmarkManager:
         )
 
     def listall_bookmarks(self):
-        """List all bookmarks with their full paths"""
+        # List all bookmarks with their full paths
         if not self._check_bookmarks_exist():
             return
 
@@ -252,7 +252,7 @@ class BookmarkManager:
         print(f"Total: {len(bookmark_list)} bookmark(s)", file=sys.stderr)
 
     def show_help(self):
-        """Display comprehensive help information"""
+        # Display comprehensive help information
         help_text = """
 Directory Bookmark Manager v2.0
 ===============================
@@ -344,7 +344,7 @@ NOTES:
         print(help_text.strip())
 
     def go_bookmark(self):
-        """Navigate to bookmarked directory (same as goto.py functionality)"""
+        # Navigate to bookmarked directory (same as goto.py functionality)
         if not self._check_bookmarks_exist():
             return
 
@@ -355,7 +355,7 @@ NOTES:
             print(selected_path)
 
     def backup_bookmarks(self):
-        """Create a backup of current bookmarks"""
+        # Create a backup of current bookmarks
         if not self.bookmark_file.exists():
             print("No bookmarks file found to backup.", file=sys.stderr)
             return
@@ -381,7 +381,7 @@ NOTES:
             print(f"Error creating backup: {e}", file=sys.stderr)
 
     def restore_bookmarks(self):
-        """Restore bookmarks from a backup file"""
+        # Restore bookmarks from a backup file
         backup_dir = Path.home()
         backup_files = list(backup_dir.glob(".dir-bookmarks-backup-*.txt"))
 
