@@ -25,6 +25,7 @@ A command-line tool to bookmark directories and quickly navigate between them.
 - Open bookmarked directories in Finder (macOS)
 - Debug bookmarks file in VS Code
 - Bulk operations (list all, flush all)
+- **Backup and restore bookmarks** - Create timestamped backups and restore from them
 - Duplicate prevention for both paths and names
 - Automatic setup script for easy installation
 
@@ -140,6 +141,29 @@ bookmark --listall
 
 This displays all bookmarks with their full directory paths and a total count.
 
+### Backup and Restore
+
+**Create a backup of your bookmarks:**
+
+```bash
+bookmark --backup
+```
+
+This creates a timestamped backup file: `~/.dir-bookmarks-backup-YYYYMMDD_HHMMSS.txt`
+
+**Restore bookmarks from a backup:**
+
+```bash
+bookmark --restore
+```
+
+This will:
+
+1. Show available backup files with timestamps and bookmark counts
+2. Prompt you to select which backup to restore
+3. Create a backup of your current bookmarks before restore
+4. Restore the selected backup file
+
 ### Example Usage for --open Feature
 
 ```bash
@@ -153,12 +177,26 @@ bookmark --open
 # Opens the directory in Finder
 ```
 
-### Example Usage for --debug, --flush, and --listall Features
+### Example Usage for --debug, --flush, --backup, --restore, and --listall Features
 
 ```bash
 # Debug bookmarks file
 bookmark --debug
 # Opens ~/.dir-bookmarks.txt in VS Code
+
+# Create backup of bookmarks
+bookmark --backup
+# Creates ~/.dir-bookmarks-backup-20250620_143025.txt
+# Shows: Bookmarks backed up to: ~/.dir-bookmarks-backup-20250620_143025.txt
+#        Backed up 5 bookmark(s)
+
+# Restore from backup
+bookmark --restore
+# Shows available backups:
+# 1. 2025-06-20 14:30:25 (5 bookmarks)
+# 2. 2025-06-19 10:15:30 (3 bookmarks)
+# Select backup to restore (number): 1
+# Creates backup of current bookmarks before restore
 
 # Clear all bookmarks
 bookmark --flush
@@ -182,6 +220,8 @@ bookmark --listall
 - `bookmark --listall` - Display all bookmarks with their full paths
 - `bookmark --debug` - Open bookmarks file in VS Code for editing
 - `bookmark --flush` - Clear all bookmarks permanently
+- `bookmark --backup` - Create timestamped backup of bookmarks
+- `bookmark --restore` - Restore bookmarks from backup file
 - `goto` - Navigate to bookmarked directory (shell function that changes current directory)
 
 ## File Structure
@@ -247,6 +287,14 @@ bookmark --open
 # Select: 1
 # Outputs: /Users/username/Documents/Important
 # Opens the directory in Finder
+
+# Create backup before making changes
+bookmark --backup
+# Creates timestamped backup
+
+# Restore from backup if needed
+bookmark --restore
+# Lists available backups and restores selected one
 ```
 
 ## Error Handling
@@ -260,7 +308,7 @@ bookmark --open
 ## Author & Repository
 
 **Author:** Hasin Hayder  
-**GitHub:** https://github.com/hasinhayder/bookomark.py  
+**GitHub:** https://github.com/hasinhayder/bookomark.py
 
 ## License
 

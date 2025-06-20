@@ -301,6 +301,17 @@ OPTIONS:
                     - Deletes all bookmarks from the file
                     - Use with caution - this action cannot be undone
 
+    --backup        Create a timestamped backup of bookmarks
+                    - Saves current bookmarks to ~/.dir-bookmarks-backup-YYYYMMDD_HHMMSS.txt
+                    - Shows count of backed up bookmarks
+                    - Safe operation - doesn't modify existing bookmarks
+
+    --restore       Restore bookmarks from a backup file
+                    - Lists available backup files with timestamps and bookmark counts
+                    - Prompts for backup selection
+                    - Creates backup of current bookmarks before restore
+                    - Confirms before overwriting current bookmarks
+
     --help          Show this help message
 
 EXAMPLES:
@@ -312,6 +323,8 @@ EXAMPLES:
     bookmark --listall          # Show all bookmarks with paths
     bookmark --debug            # Edit bookmarks file in VS Code
     bookmark --flush            # Clear all bookmarks
+    bookmark --backup           # Create timestamped backup of bookmarks
+    bookmark --restore          # Restore bookmarks from backup
     bookmark --help             # Show this help
 
 RELATED COMMANDS:
@@ -341,6 +354,153 @@ NOTES:
         if selected_path:
             print(selected_path)
 
+    def backup_bookmarks(self):
+        """Create a backup of current bookmarks"""
+        if not self.bookmark_file.exists():
+            print("No bookmarks file found to backup.", file=sys.stderr)
+            return
+
+        # Get timestamp for backup filename
+        import datetime
+
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        backup_file = Path.home() / f".dir-bookmarks-backup-{timestamp}.txt"
+
+        try:
+            # Copy bookmarks file to backup
+            import shutil
+
+            shutil.copy2(self.bookmark_file, backup_file)
+            print(f"Bookmarks backed up to: {backup_file}", file=sys.stderr)
+
+            # Also show current bookmark count
+            bookmarks = self.load_bookmarks()
+            print(f"Backed up {len(bookmarks)} bookmark(s)", file=sys.stderr)
+
+        except Exception as e:
+            print(f"Error creating backup: {e}", file=sys.stderr)
+
+    def restore_bookmarks(self):
+        """Restore bookmarks from a backup file"""
+        backup_dir = Path.home()
+        backup_files = list(backup_dir.glob(".dir-bookmarks-backup-*.txt"))
+
+        if not backup_files:
+            print("No backup files found.", file=sys.stderr)
+            print(
+                "Backup files should be named: ~/.dir-bookmarks-backup-YYYYMMDD_HHMMSS.txt",
+                file=sys.stderr,
+            )
+            return
+
+        # Sort backup files by modification time (newest first)
+        backup_files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
+
+        print("Available backup files:", file=sys.stderr)
+        print("-" * 50, file=sys.stderr)
+
+        for i, backup_file in enumerate(backup_files, 1):
+            # Extract timestamp from filename
+            filename = backup_file.name
+            timestamp_part = filename.replace(".dir-bookmarks-backup-", "").replace(
+                ".txt", ""
+            )
+
+            try:
+                # Parse timestamp for display
+                from datetime import datetime
+
+                dt = datetime.strptime(timestamp_part, "%Y%m%d_%H%M%S")
+                formatted_date = dt.strftime("%Y-%m-%d %H:%M:%S")
+
+                # Count bookmarks in backup file
+                backup_count = 0
+                try:
+                    with open(backup_file, "r") as f:
+                        backup_count = sum(
+                            1 for line in f if line.strip() and "|" in line
+                        )
+                except:
+                    backup_count = "?"
+
+                print(
+                    f"{i:2d}. {formatted_date} ({backup_count} bookmarks)",
+                    file=sys.stderr,
+                )
+
+            except ValueError:
+                # If timestamp parsing fails, just show filename
+                print(f"{i:2d}. {filename}", file=sys.stderr)
+
+        print("-" * 50, file=sys.stderr)
+
+        # Get user selection
+        try:
+            print("Select backup to restore (number): ", end="", file=sys.stderr)
+            sys.stderr.flush()
+
+            choice = sys.stdin.readline().strip()
+            choice_num = int(choice)
+
+            if 1 <= choice_num <= len(backup_files):
+                selected_backup = backup_files[choice_num - 1]
+
+                # Show current bookmarks count before restore
+                current_bookmarks = self.load_bookmarks()
+                current_count = len(current_bookmarks)
+
+                # Confirm restore operation
+                print(
+                    f"This will replace your current {current_count} bookmark(s).",
+                    file=sys.stderr,
+                )
+                confirm = (
+                    input("Are you sure you want to restore? (y/N): ").strip().lower()
+                )
+
+                if confirm == "y":
+                    try:
+                        import shutil
+
+                        # Create backup of current file before restore
+                        if self.bookmark_file.exists():
+                            current_backup = (
+                                Path.home()
+                                / f".dir-bookmarks-before-restore-{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+                            )
+                            shutil.copy2(self.bookmark_file, current_backup)
+                            print(
+                                f"Current bookmarks backed up to: {current_backup}",
+                                file=sys.stderr,
+                            )
+
+                        # Restore from selected backup
+                        shutil.copy2(selected_backup, self.bookmark_file)
+
+                        # Verify restore
+                        restored_bookmarks = self.load_bookmarks()
+                        print(
+                            f"Successfully restored {len(restored_bookmarks)} bookmark(s) from backup.",
+                            file=sys.stderr,
+                        )
+
+                    except Exception as e:
+                        print(f"Error restoring backup: {e}", file=sys.stderr)
+                else:
+                    print("Restore cancelled.", file=sys.stderr)
+            else:
+                print(
+                    f"Invalid selection. Please choose 1-{len(backup_files)}",
+                    file=sys.stderr,
+                )
+
+        except ValueError:
+            print("Invalid input. Please enter a number.", file=sys.stderr)
+        except KeyboardInterrupt:
+            print("\nCancelled.", file=sys.stderr)
+        except EOFError:
+            print("\nCancelled.", file=sys.stderr)
+
 
 def main():
     manager = BookmarkManager()
@@ -354,6 +514,8 @@ def main():
         "--debug": manager.debug_bookmarks,
         "--flush": manager.flush_bookmarks,
         "--listall": manager.listall_bookmarks,
+        "--backup": manager.backup_bookmarks,
+        "--restore": manager.restore_bookmarks,
         "--help": manager.show_help,
     }
 
@@ -364,7 +526,7 @@ def main():
         else:
             print(f"Unknown option: {command}", file=sys.stderr)
             print(
-                "Usage: bookmark [--remove|--list|--open|--go|--debug|--flush|--listall|--help]",
+                "Usage: bookmark [--remove|--list|--open|--go|--debug|--flush|--listall|--backup|--restore|--help]",
                 file=sys.stderr,
             )
             sys.exit(1)

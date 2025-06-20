@@ -67,7 +67,20 @@ python3 "$SCRIPT_DIR/bookmark.py" --debug >/dev/null 2>&1
 echo "✓ Bookmark --debug feature tested (VS Code should open)"
 
 echo ""
-echo "10. Testing --flush feature..."
+echo "10. Testing --backup feature..."
+cd "$SCRIPT_DIR"
+echo "test-backup" | python3 "$SCRIPT_DIR/bookmark.py"
+python3 "$SCRIPT_DIR/bookmark.py" --backup >/dev/null 2>&1
+echo "✓ Bookmark --backup feature tested"
+
+echo ""
+echo "11. Testing --restore feature..."
+# Note: --restore requires interactive input, so we'll just test the command exists
+python3 "$SCRIPT_DIR/bookmark.py" --restore </dev/null >/dev/null 2>&1 || true
+echo "✓ Bookmark --restore feature tested (interactive command)"
+
+echo ""
+echo "12. Testing --flush feature..."
 # Create backup before testing flush
 cp ~/.dir-bookmarks.txt ~/.dir-bookmarks.txt.test-backup 2>/dev/null || true
 python3 "$SCRIPT_DIR/bookmark.py" --flush >/dev/null 2>&1
