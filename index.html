@@ -23,530 +23,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --primary-color: #7c3aed;
-            --primary-dark: #6d28d9;
-            --secondary-color: #64748b;
-            --accent-color: #a855f7;
-            --text-color: #1e293b;
-            --text-light: #64748b;
-            --bg-color: #ffffff;
-            --bg-secondary: #faf5ff;
-            --border-color: #e2e8f0;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --border-radius: 0.5rem;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Top Bar */
-        .top-bar {
-            background: #1a1a1a;
-            color: #e5e7eb;
-            padding: 0.75rem 0;
-            font-size: 0.875rem;
-            border-bottom: 1px solid #374151;
-        }
-
-        .top-bar-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .top-bar-info {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .top-bar-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #d1d5db;
-        }
-
-        .top-bar-item strong {
-            color: white;
-        }
-
-        .top-bar-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .top-bar-links a {
-            color: #d1d5db;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .top-bar-links a:hover {
-            color: white;
-        }
-
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 4rem 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            opacity: 0.3;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .logo {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #ffffff, #f3e8ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .tagline {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            font-weight: 400;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border: 2px solid transparent;
-        }
-
-        .btn-primary {
-            background-color: white;
-            color: var(--primary-color);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--bg-secondary);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: white;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: white;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 5rem 0;
-            background-color: var(--bg-secondary);
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 3rem;
-            color: var(--text-color);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
-            transition: all 0.2s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .feature-icon {
-            width: 3rem;
-            height: 3rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .feature-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-description {
-            color: var(--text-light);
-        }
-
-        /* Quick Start Section */
-        .quick-start {
-            padding: 5rem 0;
-        }
-
-        .quick-start-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .steps {
-            list-style: none;
-        }
-
-        .step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-        }
-
-        .step-number {
-            width: 2rem;
-            height: 2rem;
-            background: var(--primary-color);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            margin-right: 1rem;
-            flex-shrink: 0;
-        }
-
-        .step-content h3 {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .step-content p {
-            color: var(--text-light);
-        }
-
-        /* Code Section */
-        .code-demo {
-            padding: 5rem 0;
-            background-color: var(--bg-secondary);
-        }
-
-        .code-container {
-            background: #2d3748;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .code-header {
-            background: #4a5568;
-            padding: 1rem 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: between;
-        }
-
-        .code-title {
-            color: white;
-            font-weight: 500;
-        }
-
-        .code-dots {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .dot {
-            width: 0.75rem;
-            height: 0.75rem;
-            border-radius: 50%;
-        }
-
-        .dot:nth-child(1) {
-            background: #ef4444;
-        }
-
-        .dot:nth-child(2) {
-            background: #f59e0b;
-        }
-
-        .dot:nth-child(3) {
-            background: #10b981;
-        }
-
-        pre {
-            margin: 0 !important;
-            padding: 1.5rem !important;
-            background: transparent !important;
-        }
-
-        /* Download Section */
-        .download {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .download::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid2" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid2)"/></svg>');
-        }
-
-        .download-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .download-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #ffffff, #f3e8ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .download-subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            opacity: 0.9;
-        }
-
-        .download-description {
-            font-size: 1rem;
-            margin-bottom: 3rem;
-            opacity: 0.8;
-            line-height: 1.7;
-        }
-
-        .download-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            display: block;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        .download .cta-buttons {
-            gap: 1.5rem;
-        }
-
-        .download .btn-primary {
-            background-color: white;
-            color: var(--primary-color);
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .download .btn-secondary {
-            background-color: transparent;
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-        }
-
-        .license-info {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            opacity: 0.8;
-            font-size: 0.9rem;
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--text-color);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            opacity: 0.8;
-            transition: opacity 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            opacity: 1;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-
-            .top-bar-content {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.75rem;
-            }
-
-            .top-bar-info {
-                gap: 1rem;
-            }
-
-            .top-bar-links {
-                gap: 1rem;
-                flex-wrap: wrap;
-            }
-
-            .logo {
-                font-size: 2rem;
-            }
-
-            .tagline {
-                font-size: 1.1rem;
-            }
-
-            .quick-start-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .footer-links {
-                justify-content: center;
-            }
-
-            .download-stats {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-
-            .download-title {
-                font-size: 2rem;
-            }
-
-            .download .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -568,6 +45,7 @@
                 <div class="top-bar-links">
                     <a href="https://github.com/hasinhayder/bookomark.py">GitHub Repository</a>
                     <a href="https://github.com/hasinhayder/bookomark.py/releases">Releases</a>
+                    <a href="documentation.html">Documentation</a>
                     <a href="https://github.com/hasinhayder">Author</a>
                 </div>
             </div>
@@ -581,6 +59,25 @@
                 <h1 class="logo">Directory Bookmark Manager</h1>
                 <p class="tagline">Bookmark directories and navigate like a pro in your terminal</p>
 
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <span class="hero-feature-icon">⚡</span>
+                        <span>Instant Navigation</span>
+                    </div>
+                    <div class="hero-feature">
+                        <span class="hero-feature-icon">🎯</span>
+                        <span>Smart Bookmarks</span>
+                    </div>
+                    <div class="hero-feature">
+                        <span class="hero-feature-icon">💻</span>
+                        <span>Cross Platform</span>
+                    </div>
+                </div>
+
+                <div class="hero-description">
+                    <p>Stop wasting time typing long directory paths. Bookmark your favorite locations and jump to them instantly with simple commands like <code>bookmark</code> and <code>bookmark --go</code>.</p>
+                </div>
+
                 <div class="cta-buttons">
                     <a href="https://github.com/hasinhayder/bookomark.py" class="btn btn-primary">
                         📥 Download on GitHub
@@ -588,6 +85,18 @@
                     <a href="#quick-start" class="btn btn-secondary">
                         🚀 Quick Start
                     </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-label">MIT Licensed</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-label">Python 3.6+</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-label">Zero Dependencies</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -674,7 +183,7 @@
                             <div class="step-number">4</div>
                             <div class="step-content">
                                 <h3>Start Bookmarking</h3>
-                                <p>Begin using <code>bookmark</code> and <code>goto</code> commands</p>
+                                <p>Begin using <code>bookmark</code> and <code>bookmark --go</code> commands</p>
                             </div>
                         </li>
                     </ol>
@@ -702,7 +211,7 @@ source ~/.zshrc
 
 # Start using it!
 bookmark              # Add current directory
-goto                  # Navigate to bookmarks</code></pre>
+bookmark --go         # Navigate to bookmarks</code></pre>
                     </div>
                 </div>
             </div>
@@ -734,7 +243,7 @@ bookmark
 # Enter: "docs"
 
 # Later, from anywhere:
-goto
+bookmark --go
 # Shows:
 # 1. docs
 # 2. myapp
@@ -807,7 +316,7 @@ bookmark --flush      # Clear all bookmarks</code></pre>
 
                 <div class="footer-links">
                     <a href="https://github.com/hasinhayder/bookomark.py">GitHub</a>
-                    <a href="https://github.com/hasinhayder/bookomark.py/blob/main/README.md">Documentation</a>
+                    <a href="documentation.html">Documentation</a>
                     <a href="https://github.com/hasinhayder/bookomark.py/blob/main/LICENSE">License</a>
                     <a href="https://github.com/hasinhayder/bookomark.py/issues">Issues</a>
                     <a href="https://github.com/hasinhayder">Author</a>

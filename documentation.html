@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Directory Bookmark Manager</title>
+    <meta name="description" content="Complete documentation for Directory Bookmark Manager - learn all commands, options, and advanced usage.">
+    <meta name="author" content="Hasin Hayder">
+    <meta name="license" content="MIT">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hasinhayder.github.io/bookomark.py/documentation.html">
+    <meta property="og:title" content="Documentation - Directory Bookmark Manager">
+    <meta property="og:description" content="Complete documentation for Directory Bookmark Manager - learn all commands, options, and advanced usage.">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://hasinhayder.github.io/bookomark.py/documentation.html">
+    <meta property="twitter:title" content="Documentation - Directory Bookmark Manager">
+    <meta property="twitter:description" content="Complete documentation for Directory Bookmark Manager - learn all commands, options, and advanced usage.">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Documentation specific styles */
+        .doc-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .doc-nav {
+            background: var(--bg-secondary);
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .doc-nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .doc-nav-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .doc-nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .doc-nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .back-to-home {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-to-home:hover {
+            text-decoration: underline;
+        }
+
+        .doc-content {
+            padding: 4rem 0;
+        }
+
+        .doc-section {
+            margin-bottom: 4rem;
+        }
+
+        .doc-section h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .doc-section h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            color: var(--text-color);
+        }
+
+        .doc-section h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem 0;
+            color: var(--text-color);
+        }
+
+        .doc-section p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            color: var(--text-light);
+        }
+
+        .doc-section ul {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+
+        .doc-section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
+        .command-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .command-table th,
+        .command-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .command-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .command-table td {
+            color: var(--text-light);
+        }
+
+        .command-table code {
+            background: var(--bg-secondary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+        }
+
+        .example-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .example-box h4 {
+            margin-top: 0;
+            color: var(--text-color);
+        }
+
+        .warning-box {
+            background: #fef3cd;
+            border: 1px solid #fdb10b;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box p {
+            margin: 0;
+            color: #8b5a00;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #3b82f6;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: #0c5460;
+        }
+
+        .toc {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .doc-nav-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .doc-nav-links {
+                gap: 1rem;
+            }
+
+            .command-table {
+                font-size: 0.9rem;
+            }
+
+            .command-table th,
+            .command-table td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div class="top-bar-info">
+                    <div class="top-bar-item">
+                        <strong>Directory Bookmark Manager - Documentation</strong>
+                    </div>
+                    <div class="top-bar-item">
+                        Version: <strong>1.0</strong>
+                    </div>
+                    <div class="top-bar-item">
+                        License: <strong>MIT</strong>
+                    </div>
+                </div>
+                <div class="top-bar-links">
+                    <a href="https://github.com/hasinhayder/bookomark.py">GitHub Repository</a>
+                    <a href="https://github.com/hasinhayder/bookomark.py/releases">Releases</a>
+                    <a href="https://github.com/hasinhayder">Author</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Documentation Header -->
+    <header class="doc-header">
+        <div class="container">
+            <h1 class="logo" style="font-size: 2.5rem;">Documentation</h1>
+            <p class="tagline">Complete guide to Directory Bookmark Manager</p>
+        </div>
+    </header>
+
+    <!-- Documentation Navigation -->
+    <nav class="doc-nav">
+        <div class="container">
+            <div class="doc-nav-content">
+                <a href="index.html" class="back-to-home">← Back to Home</a>
+                <div class="doc-nav-links">
+                    <a href="#installation">Installation</a>
+                    <a href="#commands">Commands</a>
+                    <a href="#examples">Examples</a>
+                    <a href="#troubleshooting">Troubleshooting</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Documentation Content -->
+    <main class="doc-content">
+        <div class="container">
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h3>📋 Table of Contents</h3>
+                <ul>
+                    <li><a href="#installation">🚀 Installation</a></li>
+                    <li><a href="#commands">⚡ Commands Reference</a></li>
+                    <li><a href="#examples">💡 Usage Examples</a></li>
+                    <li><a href="#advanced">🔧 Advanced Usage</a></li>
+                    <li><a href="#troubleshooting">🐛 Troubleshooting</a></li>
+                    <li><a href="#faq">❓ FAQ</a></li>
+                </ul>
+            </div>
+
+            <!-- Installation Section -->
+            <section id="installation" class="doc-section">
+                <h2>🚀 Installation</h2>
+
+                <h3>Prerequisites</h3>
+                <ul>
+                    <li>Python 3.6 or higher</li>
+                    <li>macOS, Linux, or other Unix-like system</li>
+                    <li>Bash or Zsh shell</li>
+                </ul>
+
+                <h3>Quick Install</h3>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-title">Terminal</span>
+                        <div class="code-dots">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                    </div>
+                    <pre><code class="language-bash"># Clone the repository
+git clone https://github.com/hasinhayder/bookomark.py.git
+cd bookomark.py
+
+# Run the setup script
+./setup.sh
+
+# Restart your terminal or reload shell
+source ~/.zshrc  # or source ~/.bashrc</code></pre>
+                </div>
+
+                <h3>Manual Installation</h3>
+                <p>If you prefer to install manually:</p>
+                <ol>
+                    <li>Download the <code>bookmark.py</code> script</li>
+                    <li>Make it executable: <code>chmod +x bookmark.py</code></li>
+                    <li>Add the script directory to your PATH</li>
+                    <li>Add the bookmark function to your shell configuration</li>
+                </ol>
+
+                <div class="info-box">
+                    <p><strong>💡 Tip:</strong> The setup script automatically handles all configuration for you, including adding the necessary functions to your shell profile.</p>
+                </div>
+            </section>
+
+            <!-- Commands Section -->
+            <section id="commands" class="doc-section">
+                <h2>⚡ Commands Reference</h2>
+
+                <h3>Basic Commands</h3>
+                <table class="command-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>bookmark</code></td>
+                            <td>Add current directory as a bookmark with a custom name</td>
+                        </tr>
+                        <tr>
+                            <td><code>bookmark --go</code></td>
+                            <td>Show list of bookmarks and navigate to selected one</td>
+                        </tr>
+                        <tr>
+                            <td><code>bookmark --list</code></td>
+                            <td>List all bookmarks with numbers (useful for scripting)</td>
+                        </tr>
+                        <tr>
+                            <td><code>bookmark --listall</code></td>
+                            <td>Show all bookmarks with their full paths</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Management Commands</h3>
+                <table class="command-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>bookmark --remove</code></td>
+                            <td>Remove bookmark for current directory</td>
+                        </tr>
+                        <tr>
+                            <td><code>bookmark --flush</code></td>
+                            <td>Clear all bookmarks (requires confirmation)</td>
+                        </tr>
+                        <tr>
+                            <td><code>bookmark --open</code></td>
+                            <td>Open current directory in Finder (macOS only)</td>
+                        </tr>
+                        <tr>
+                            <td><code>bookmark --edit</code></td>
+                            <td>Edit bookmarks file in VS Code</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Information Commands</h3>
+                <table class="command-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>bookmark --help</code></td>
+                            <td>Show help information</td>
+                        </tr>
+                        <tr>
+                            <td><code>bookmark --version</code></td>
+                            <td>Show version information</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Examples Section -->
+            <section id="examples" class="doc-section">
+                <h2>💡 Usage Examples</h2>
+
+                <div class="example-box">
+                    <h4>📁 Basic Bookmarking</h4>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># Navigate to your project
+cd ~/Projects/MyAwesomeApp
+
+# Bookmark it
+bookmark
+# Enter name: myapp
+
+# Now you can jump back from anywhere
+bookmark --go
+# Select: myapp</code></pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>🔍 Listing Bookmarks</h4>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># List all bookmarks with numbers
+bookmark --list
+# Output:
+# 1. myapp
+# 2. docs
+# 3. downloads
+
+# List with full paths
+bookmark --listall
+# Output:
+# myapp: /Users/user/Projects/MyAwesomeApp
+# docs: /Users/user/Documents
+# downloads: /Users/user/Downloads</code></pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>🗑️ Managing Bookmarks</h4>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># Remove bookmark for current directory
+cd ~/Projects/MyAwesomeApp
+bookmark --remove
+
+# Clear all bookmarks
+bookmark --flush
+# Confirmation required: Are you sure? (y/N)</code></pre>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>🖥️ macOS Integration</h4>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># Open current directory in Finder
+bookmark --open
+
+# Edit bookmarks in VS Code
+bookmark --edit</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Advanced Usage Section -->
+            <section id="advanced" class="doc-section">
+                <h2>🔧 Advanced Usage</h2>
+
+                <h3>Shell Integration</h3>
+                <p>The bookmark function integrates seamlessly with your shell. It uses the <code>cd</code> command to change directories, so all shell features work as expected.</p>
+
+                <h3>Scripting with Bookmarks</h3>
+                <div class="code-container">
+                    <pre><code class="language-bash"># Use in scripts
+bookmark_count=$(bookmark --list | wc -l)
+echo "You have $bookmark_count bookmarks"
+
+# Navigate programmatically (example)
+bookmark --go &lt;&lt;&lt; "1"  # Go to first bookmark</code></pre>
+                </div>
+
+                <h3>Bookmark File Location</h3>
+                <p>Bookmarks are stored in <code>~/.bookmarks</code> as a simple text file with the format:</p>
+                <div class="code-container">
+                    <pre><code class="language-bash">bookmark_name:/path/to/directory
+another_bookmark:/another/path</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <p><strong>⚠️ Warning:</strong> Manually editing the bookmarks file is possible but not recommended. Use the provided commands for safety.</p>
+                </div>
+
+                <h3>Duplicate Prevention</h3>
+                <p>The system automatically prevents duplicate bookmarks:</p>
+                <ul>
+                    <li>Same directory with different names: Updates the existing bookmark</li>
+                    <li>Same name with different directories: Prompts for confirmation</li>
+                </ul>
+            </section>
+
+            <!-- Troubleshooting Section -->
+            <section id="troubleshooting" class="doc-section">
+                <h2>🐛 Troubleshooting</h2>
+
+                <h3>Command Not Found</h3>
+                <p>If you get "command not found" error:</p>
+                <ul>
+                    <li>Make sure you ran the setup script: <code>./setup.sh</code></li>
+                    <li>Restart your terminal or run: <code>source ~/.zshrc</code></li>
+                    <li>Check if the bookmark function is in your shell profile</li>
+                </ul>
+
+                <h3>Permission Denied</h3>
+                <p>If you get permission errors:</p>
+                <ul>
+                    <li>Make the script executable: <code>chmod +x bookmark.py</code></li>
+                    <li>Check file permissions for <code>~/.bookmarks</code></li>
+                </ul>
+
+                <h3>Bookmarks Not Persisting</h3>
+                <p>If bookmarks disappear:</p>
+                <ul>
+                    <li>Check if <code>~/.bookmarks</code> file exists and is writable</li>
+                    <li>Ensure you have write permissions in your home directory</li>
+                </ul>
+
+                <h3>Python Issues</h3>
+                <p>If Python-related errors occur:</p>
+                <ul>
+                    <li>Ensure Python 3.6+ is installed: <code>python3 --version</code></li>
+                    <li>Try using <code>python3</code> instead of <code>python</code></li>
+                </ul>
+            </section>
+
+            <!-- FAQ Section -->
+            <section id="faq" class="doc-section">
+                <h2>❓ Frequently Asked Questions</h2>
+
+                <h3>Can I use this on Windows?</h3>
+                <p>Currently, the tool is designed for Unix-like systems (macOS, Linux). Windows support via WSL should work but is not officially tested.</p>
+
+                <h3>How many bookmarks can I have?</h3>
+                <p>There's no hard limit, but for practical use, keeping it under 50 bookmarks is recommended for easy navigation.</p>
+
+                <h3>Can I backup my bookmarks?</h3>
+                <p>Yes! Simply copy the <code>~/.bookmarks</code> file. You can restore it by copying it back to the same location.</p>
+
+                <h3>Does this work with symbolic links?</h3>
+                <p>Yes, the tool resolves symbolic links to their actual paths when creating bookmarks.</p>
+
+                <h3>Can I use spaces in bookmark names?</h3>
+                <p>Yes, bookmark names can contain spaces. Just enter the name normally when prompted.</p>
+
+                <h3>What happens if a bookmarked directory is deleted?</h3>
+                <p>The bookmark will remain in the list, but attempting to navigate to it will show an error. You can remove invalid bookmarks manually.</p>
+            </section>
+
+            <!-- Back to Top -->
+            <div style="text-align: center; margin-top: 4rem;">
+                <a href="#" class="btn btn-secondary">↑ Back to Top</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <p>&copy; 2025 Hasin Hayder. Released under MIT License.</p>
+                </div>
+
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="https://github.com/hasinhayder/bookomark.py">GitHub</a>
+                    <a href="https://github.com/hasinhayder/bookomark.py/blob/main/LICENSE">License</a>
+                    <a href="https://github.com/hasinhayder/bookomark.py/issues">Issues</a>
+                    <a href="https://github.com/hasinhayder">Author</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight current section in navigation
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.doc-section');
+            const navLinks = document.querySelectorAll('.doc-nav-links a');
+
+            let currentSection = '';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    currentSection = section.id;
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.color = link.getAttribute('href').substring(1) === currentSection
+                    ? 'var(--accent-color)'
+                    : 'var(--text-color)';
+            });
+        });
+    </script>
+</body>
+
+</html>
