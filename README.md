@@ -71,7 +71,7 @@ goto
 This will:
 
 1. Show all bookmarked directories with numbers
-2. Prompt you to select a number  
+2. Prompt you to select a number
 3. Change to the selected directory in your current shell session
 
 **Navigate to bookmarks (for shell scripting):**
