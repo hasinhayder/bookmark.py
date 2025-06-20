@@ -1,0 +1,16 @@
+#!/bin/bash
+# Shell wrapper for goto.py that changes to the selected directory
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Run goto.py and capture the output
+selected_path=$(python3 "$SCRIPT_DIR/goto.py")
+
+# Check if a path was returned and it exists
+if [ -n "$selected_path" ] && [ -d "$selected_path" ]; then
+    echo "Changing to: $selected_path" >&2
+    cd "$selected_path" && exec $SHELL
+elif [ -n "$selected_path" ]; then
+    echo "Directory not found: $selected_path" >&2
+fi
