@@ -1,5 +1,9 @@
 # Directory Bookmark Manager
 
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.6%2B-brightgreen.svg)
+![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-lightgrey.svg)
+
 A command-line tool to bookmark directories and quickly navigate between them.
 
 **Author:** Hasin Hayder  
@@ -257,4 +261,17 @@ bookmark --open
 
 **Author:** Hasin Hayder  
 **GitHub:** https://github.com/hasinhayder/bookomark.py  
-**License:** Open source - feel free to contribute or fork!
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### MIT License Summary
+
+- ✅ **Commercial use** - Use in commercial projects
+- ✅ **Modification** - Modify the source code
+- ✅ **Distribution** - Distribute copies
+- ✅ **Private use** - Use privately
+- ✅ **Patent use** - Grant of patent rights from contributors
+
+**Copyright (c) 2025 Hasin Hayder**
