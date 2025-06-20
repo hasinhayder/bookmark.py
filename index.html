@@ -260,6 +260,79 @@ bookmark --flush      # Clear all bookmarks</code></pre>
         </div>
     </section>
 
+    <!-- Best Practices -->
+    <section class="best-practices">
+        <div class="container">
+            <h2 class="section-title">Best Practices & Workflows</h2>
+
+            <div class="workflow-grid">
+                <div class="workflow-card">
+                    <div class="workflow-header">
+                        <h3>🔄 Backup & Restore Workflow</h3>
+                        <p>Safe bookmark management for system changes</p>
+                    </div>
+
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="code-title">Recommended Workflow</span>
+                            <div class="code-dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
+                        <pre><code class="language-bash"># Before major system changes (OS updates, migrations, etc.)
+bookmark --backup
+# Creates: ~/bookmark-backup-YYYY-MM-DD-HHMMSS.txt
+
+# After system restoration or on new machine:
+bookmark --restore ~/bookmark-backup-2025-01-15-143022.txt
+# Restores all your bookmarks
+
+# Regular backup (recommended weekly):
+bookmark --backup
+
+# View current bookmarks before backup:
+bookmark --listall</code></pre>
+                    </div>
+                </div>
+
+                <div class="workflow-card">
+                    <div class="workflow-header">
+                        <h3>⚡ Daily Usage Tips</h3>
+                        <p>Maximize your productivity with these patterns</p>
+                    </div>
+
+                    <div class="workflow-tips">
+                        <div class="tip">
+                            <span class="tip-icon">📁</span>
+                            <div>
+                                <strong>Organize by Project:</strong>
+                                <p>Use descriptive names like "proj-frontend", "proj-backend", "proj-docs"</p>
+                            </div>
+                        </div>
+
+                        <div class="tip">
+                            <span class="tip-icon">🔧</span>
+                            <div>
+                                <strong>Quick Scripts:</strong>
+                                <p>Combine with aliases: <code>alias pf='bookmark --go | grep frontend'</code></p>
+                            </div>
+                        </div>
+
+                        <div class="tip">
+                            <span class="tip-icon">🗂️</span>
+                            <div>
+                                <strong>Cleanup Regularly:</strong>
+                                <p>Remove outdated bookmarks with <code>bookmark --remove</code></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Download -->
     <section class="download">
         <div class="container">

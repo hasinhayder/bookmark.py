@@ -254,6 +254,101 @@
             .command-table td {
                 padding: 0.75rem;
             }
+
+            .example-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .maintenance-tips {
+                gap: 1rem;
+            }
+
+            .tip-item {
+                flex-direction: column;
+                text-align: center;
+                padding: 1rem;
+            }
+
+            .tip-number {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* New Styles for Best Practices Section */
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .example-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .example-item h4 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .example-item ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .example-item li {
+            margin-bottom: 0.5rem;
+            color: #64748b;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.875rem;
+        }
+
+        .maintenance-tips {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .tip-number {
+            background: #3b82f6;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .tip-item strong {
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .tip-item p {
+            margin-top: 0.25rem;
+            color: #64748b;
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -300,6 +395,7 @@
                     <a href="#installation">Installation</a>
                     <a href="#commands">Commands</a>
                     <a href="#examples">Examples</a>
+                    <a href="#workflows">Workflows</a>
                     <a href="#troubleshooting">Troubleshooting</a>
                 </div>
             </div>
@@ -317,6 +413,7 @@
                     <li><a href="#commands">⚡ Commands Reference</a></li>
                     <li><a href="#examples">💡 Usage Examples</a></li>
                     <li><a href="#advanced">🔧 Advanced Usage</a></li>
+                    <li><a href="#workflows">🔄 Best Practices & Workflows</a></li>
                     <li><a href="#troubleshooting">🐛 Troubleshooting</a></li>
                     <li><a href="#faq">❓ FAQ</a></li>
                 </ul>
@@ -583,6 +680,150 @@ another_bookmark:/another/path</code></pre>
                 </ul>
             </section>
 
+            <!-- Best Practices & Workflows Section -->
+            <section id="workflows" class="doc-section">
+                <h2>🔄 Best Practices & Workflows</h2>
+
+                <h3>Backup & Restore Workflow</h3>
+                <p>Protect your bookmarks before major system changes with this recommended workflow:</p>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span style="color:#ccc">Before System Changes (OS updates, migrations, etc.)</span>
+                    </div>
+                    <pre><code class="language-bash"># Create a timestamped backup
+bookmark --backup
+# Creates: ~/bookmark-backup-YYYY-MM-DD-HHMMSS.txt
+
+# Verify backup was created
+ls ~/bookmark-backup-*.txt
+
+# View current bookmarks before changes
+bookmark --listall</code></pre>
+                </div>
+
+                <div class="code-container" style="margin-top:20px;">
+                    <div class="code-header">
+                        <span style="color:#ccc">After System Restoration or on New Machine</span>
+                    </div>
+                    <pre><code class="language-bash"># Restore from backup file
+bookmark --restore ~/bookmark-backup-2025-01-15-143022.txt
+
+# Verify restoration worked
+bookmark --listall
+
+# Test navigation to ensure paths are valid
+bookmark --go</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>💡 Pro Tip:</strong> Set up a weekly cron job to automatically backup your bookmarks:</p>
+                    <pre><code># Add to your crontab (crontab -e)
+0 0 * * 0 /path/to/bookmark.py --backup</code></pre>
+                </div>
+
+                <h3>Organizing Your Bookmarks</h3>
+                <p>Use these naming conventions to keep your bookmarks organized:</p>
+
+                <div class="example-grid">
+                    <div class="example-item">
+                        <h4>📁 Project-Based</h4>
+                        <ul>
+                            <li><code>proj-frontend</code></li>
+                            <li><code>proj-backend</code></li>
+                            <li><code>proj-docs</code></li>
+                            <li><code>proj-config</code></li>
+                        </ul>
+                    </div>
+
+                    <div class="example-item">
+                        <h4>🏢 Environment-Based</h4>
+                        <ul>
+                            <li><code>dev-api</code></li>
+                            <li><code>staging-web</code></li>
+                            <li><code>prod-deploy</code></li>
+                            <li><code>local-test</code></li>
+                        </ul>
+                    </div>
+
+                    <div class="example-item">
+                        <h4>📂 Category-Based</h4>
+                        <ul>
+                            <li><code>work-reports</code></li>
+                            <li><code>personal-photos</code></li>
+                            <li><code>downloads-temp</code></li>
+                            <li><code>scripts-util</code></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Integration with Other Tools</h3>
+                <p>Combine bookmarks with other terminal tools for maximum efficiency:</p>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>Shell Aliases & Functions</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code class="language-bash"># Add to your ~/.zshrc or ~/.bashrc
+
+# Quick project navigation
+alias pf='bookmark --go | grep "proj-frontend"'
+alias pb='bookmark --go | grep "proj-backend"'
+
+# Bookmark current dir with automatic naming
+function bmhere() {
+    local name=${PWD##*/}  # Use current directory name
+    echo "$name" | bookmark
+}
+
+# Bookmark and immediately list to verify
+function bm() {
+    bookmark && bookmark --listall
+}
+
+# Quick backup before risky operations
+alias safe='bookmark --backup && echo "Bookmarks backed up safely!"'</code></pre>
+                </div>
+
+                <h3>Regular Maintenance</h3>
+                <p>Keep your bookmarks clean and efficient:</p>
+
+                <div class="maintenance-tips">
+                    <div class="tip-item">
+                        <span class="tip-number">1</span>
+                        <div>
+                            <strong>Weekly Review:</strong>
+                            <p>Run <code>bookmark --listall</code> to review all bookmarks and remove unused ones.</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-item">
+                        <span class="tip-number">2</span>
+                        <div>
+                            <strong>Clean Invalid Paths:</strong>
+                            <p>Test navigation to each bookmark and remove those pointing to deleted directories.</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-item">
+                        <span class="tip-number">3</span>
+                        <div>
+                            <strong>Backup Before Cleanup:</strong>
+                            <p>Always run <code>bookmark --backup</code> before removing multiple bookmarks.</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-item">
+                        <span class="tip-number">4</span>
+                        <div>
+                            <strong>Update Documentation:</strong>
+                            <p>Keep a note of your naming conventions for consistency across projects.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- FAQ Section -->
             <section id="faq" class="doc-section">
                 <h2>❓ Frequently Asked Questions</h2>
@@ -594,7 +835,13 @@ another_bookmark:/another/path</code></pre>
                 <p>There's no hard limit, but for practical use, keeping it under 50 bookmarks is recommended for easy navigation.</p>
 
                 <h3>Can I backup my bookmarks?</h3>
-                <p>Yes! Simply copy the <code>~/.bookmarks</code> file. You can restore it by copying it back to the same location.</p>
+                <p>Yes! Use the built-in backup commands:</p>
+                <ul>
+                    <li><code>bookmark --backup</code> - Creates a timestamped backup file</li>
+                    <li><code>bookmark --restore</code> - Restores from a backup file</li>
+                    <li>Manual method: Copy the <code>~/.dir-bookmarks.txt</code> file</li>
+                </ul>
+                <p>See the <a href="#workflows">Best Practices & Workflows</a> section for detailed backup workflows.</p>
 
                 <h3>Does this work with symbolic links?</h3>
                 <p>Yes, the tool resolves symbolic links to their actual paths when creating bookmarks.</p>
