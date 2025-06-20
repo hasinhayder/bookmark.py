@@ -130,7 +130,7 @@ class BookmarkManager:
         return bookmark_list
 
     def _get_user_selection(
-        self, bookmark_list, prompt="Select a directory (number): "
+        self, bookmark_list, prompt="Select a directory (number) or 0 to exit: "
     ):
         # Get user selection from bookmark list
         try:
@@ -140,11 +140,14 @@ class BookmarkManager:
             choice = sys.stdin.readline().strip()
             choice_num = int(choice)
 
-            if 1 <= choice_num <= len(bookmark_list):
+            if choice_num == 0:
+                print("Exiting...", file=sys.stderr)
+                return "EXIT"
+            elif 1 <= choice_num <= len(bookmark_list):
                 return bookmark_list[choice_num - 1][1]  # Return path
             else:
                 print(
-                    f"Invalid selection. Please choose 1-{len(bookmark_list)}",
+                    f"Invalid selection. Please choose 0-{len(bookmark_list)}",
                     file=sys.stderr,
                 )
                 return None
@@ -166,7 +169,7 @@ class BookmarkManager:
         bookmark_list = self._display_bookmark_menu()
         selected_path = self._get_user_selection(bookmark_list)
 
-        if selected_path:
+        if selected_path and selected_path != "EXIT":
             print(selected_path)
 
     def open_bookmark(self):
@@ -176,10 +179,10 @@ class BookmarkManager:
 
         bookmark_list = self._display_bookmark_menu()
         selected_path = self._get_user_selection(
-            bookmark_list, "Select a directory to open (number): "
+            bookmark_list, "Select a directory to open (number) or 0 to exit: "
         )
 
-        if selected_path:
+        if selected_path and selected_path != "EXIT":
             # Check if directory exists
             if not os.path.exists(selected_path):
                 print(f"Directory not found: {selected_path}", file=sys.stderr)
@@ -339,7 +342,7 @@ NOTES:
         bookmark_list = self._display_bookmark_menu()
         selected_path = self._get_user_selection(bookmark_list)
 
-        if selected_path:
+        if selected_path and selected_path != "EXIT":
             print(selected_path)
 
     def backup_bookmarks(self):
