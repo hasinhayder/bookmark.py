@@ -319,13 +319,13 @@ EXAMPLES:
     bookmark --remove           # Remove current directory's bookmark
     bookmark --list             # List and select bookmark (outputs path)
     bookmark --open             # List and open bookmark in Finder
-    bookmark --go               # Navigate to bookmarked directory
     bookmark --listall          # Show all bookmarks with paths
     bookmark --debug            # Edit bookmarks file in VS Code
     bookmark --flush            # Clear all bookmarks
     bookmark --backup           # Create timestamped backup of bookmarks
     bookmark --restore          # Restore bookmarks from backup
     bookmark --help             # Show this help
+    goto                        # Navigate to bookmarked directory (shell function)
 
 RELATED COMMANDS:
     goto                        # Navigate to bookmarked directory (shell function)

@@ -106,7 +106,7 @@ bookmark --list
 **Get directory path for shell navigation:**
 
 ```bash
-bookmark --go
+goto
 ```
 
 **Open bookmark in Finder (macOS):**
@@ -216,7 +216,6 @@ bookmark --listall
 - `bookmark --remove` - Remove current directory's bookmark
 - `bookmark --list` - List bookmarks and select one (outputs path)
 - `bookmark --open` - List bookmarks and open selected one in Finder
-- `bookmark --go` - Navigate to bookmarked directory (outputs path for shell)
 - `bookmark --listall` - Display all bookmarks with their full paths
 - `bookmark --debug` - Open bookmarks file in VS Code for editing
 - `bookmark --flush` - Clear all bookmarks permanently
@@ -227,7 +226,7 @@ bookmark --listall
 ## File Structure
 
 - `bookmark.py` - Main script with all bookmark management and navigation features
-- `goto_function.sh` - Shell function for directory navigation (uses bookmark --go)
+- `goto_function.sh` - Shell function for directory navigation (uses bookmark --go internally)
 - `setup.sh` - Automated setup script for easy installation
 - `test.sh` - Test script to verify all functionality works
 - `~/.dir-bookmarks.txt` - Storage file for bookmarks (auto-created)
@@ -267,7 +266,7 @@ bookmark --remove
 # Removes the "myapp" bookmark
 
 # Get directory path for scripting
-bookmark --go
+goto
 # Shows:
 # 1. docs
 # Select: 1
