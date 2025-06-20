@@ -555,6 +555,43 @@ pre {
   font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
 }
 
+/* Footer */
+.footer {
+  background: #1a1a1a;
+  color: #e5e7eb;
+  padding: 1.5rem 0;
+  border-top: 1px solid #374151;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-content p {
+  margin: 0;
+  color: #d1d5db;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #d1d5db;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: white;
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
   .container {
