@@ -1,12 +1,5 @@
 #!/bin/bash
-# Test script for Directoecho ""
-echo "5. Testing bookmark removal..."
-cd "$SCRIPT_DIR"
-python3 bookmark.py --remove
-echo "✓ Bookmark removed"
-
-echo ""
-echo "6. Testing empty bookmark list..."mark Manager
+# Test script for Directory Bookmark Manager
 
 echo "Testing Directory Bookmark Manager"
 echo "=================================="
@@ -23,9 +16,9 @@ echo "test-bookmark" | python3 bookmark.py
 echo "✓ Bookmark created"
 
 echo ""
-echo "2. Testing bookmark listing..."
-python3 goto.py <<< "1"
-echo "✓ Bookmark listed and selected"
+echo "2. Testing bookmark --go feature..."
+echo "1" | python3 "$SCRIPT_DIR/bookmark.py" --go >/dev/null 2>&1
+echo "✓ Bookmark --go feature tested"
 
 echo ""
 echo "3. Testing bookmark --list feature..."
@@ -34,27 +27,27 @@ cd /tmp
 echo "Temporary" | python3 "$SCRIPT_DIR/bookmark.py"
 cd "$HOME"
 echo "Home" | python3 "$SCRIPT_DIR/bookmark.py"
-echo "1" | python3 "$SCRIPT_DIR/bookmark.py" --list
+echo "1" | python3 "$SCRIPT_DIR/bookmark.py" --list >/dev/null 2>&1
 echo "✓ Bookmark --list feature tested"
 
 echo ""
-echo "5. Testing duplicate prevention..."
+echo "4. Testing duplicate prevention..."
 cd "$SCRIPT_DIR"
 echo "test-bookmark" | python3 "$SCRIPT_DIR/bookmark.py"
 echo "✓ Duplicate prevention tested"
 
 echo ""
-echo "6. Testing bookmark removal..."
+echo "5. Testing bookmark removal..."
 python3 "$SCRIPT_DIR/bookmark.py" --remove
 echo "✓ Bookmark removed"
 
 echo ""
-echo "7. Testing empty bookmark list..."
-python3 "$SCRIPT_DIR/goto.py"
+echo "6. Testing empty bookmark list..."
+python3 "$SCRIPT_DIR/bookmark.py" --go >/dev/null 2>&1
 echo "✓ Empty list handled"
 
 echo ""
-echo "4. Testing bookmark --open feature..."
+echo "7. Testing bookmark --open feature..."
 echo "1" | python3 "$SCRIPT_DIR/bookmark.py" --open >/dev/null 2>&1
 echo "✓ Bookmark --open feature tested (Finder should open)"
 

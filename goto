@@ -1,11 +1,11 @@
 #!/bin/bash
-# Shell wrapper for goto.py that changes to the selected directory
+# Shell wrapper for bookmark --go that changes to the selected directory
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Run goto.py and capture the output
-selected_path=$(python3 "$SCRIPT_DIR/goto.py")
+# Run bookmark --go and capture the output
+selected_path=$(python3 "$SCRIPT_DIR/bookmark.py" --go)
 
 # Check if a path was returned and it exists
 if [ -n "$selected_path" ] && [ -d "$selected_path" ]; then

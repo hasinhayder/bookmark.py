@@ -76,6 +76,21 @@ This will:
 2. Prompt you to select a number
 3. Change to the selected directory
 
+**Navigate to bookmarks (for shell scripting):**
+
+```bash
+python3 bookmark.py --go
+# or if you set up aliases:
+bookmark --go
+```
+
+This will:
+
+1. Show all bookmarked directories with names in lowercase
+2. Display them sorted alphabetically with numbers
+3. Prompt you to select a number
+4. Echo the corresponding directory path (used by goto shell function)
+
 **List all bookmarks and select one:**
 
 ```bash
@@ -177,17 +192,17 @@ python3 bookmark.py --listall
 - `bookmark --remove` - Remove current directory's bookmark
 - `bookmark --list` - List bookmarks and select one (outputs path)
 - `bookmark --open` - List bookmarks and open selected one in Finder
+- `bookmark --go` - Navigate to bookmarked directory (outputs path for shell)
 - `bookmark --listall` - Display all bookmarks with their full paths
 - `bookmark --debug` - Open bookmarks file in VS Code for editing
 - `bookmark --flush` - Clear all bookmarks permanently
-- `goto` - Navigate to bookmarked directory (interactive)
+- `goto` - Navigate to bookmarked directory (interactive shell function)
 
 ## File Structure
 
-- `bookmark.py` - Main bookmarking script
-- `goto.py` - Bookmark listing and selection script
-- `goto` - Shell script wrapper (alternative to function)
-- `goto_function.sh` - Shell function for better directory changing
+- `bookmark.py` - Main script with all bookmark management and navigation features
+- `goto` - Shell script wrapper for directory navigation
+- `goto_function.sh` - Shell function for better directory changing (uses bookmark --go)
 - `~/.dir-bookmarks.txt` - Storage file for bookmarks (auto-created)
 
 ## Storage Format
@@ -223,6 +238,22 @@ goto
 cd ~/Projects/MyApp
 python3 bookmark.py --remove
 # Removes the "myapp" bookmark
+
+# Navigate using goto function
+goto
+# Shows:
+# 1. docs
+# 2. myapp
+# Select: 2
+# Changes to ~/Projects/MyApp
+
+# Get directory path for scripting
+python3 bookmark.py --go
+# Shows:
+# 1. docs
+# 2. myapp
+# Select: 1
+# Outputs: /Users/username/Documents/Important
 
 # List all bookmarks and get a path
 python3 bookmark.py --list

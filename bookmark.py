@@ -277,6 +277,12 @@ OPTIONS:
                     - Opens selected directory in macOS Finder
                     - Requires macOS and 'open' command
 
+    --go            Navigate to bookmarked directory
+                    - Shows bookmarks in lowercase, sorted alphabetically
+                    - Prompts for number selection
+                    - Outputs selected directory path for shell navigation
+                    - Used by goto shell function
+
     --listall       Display all bookmarks with their full paths
                     - Shows name -> path mapping
                     - Includes total count
@@ -297,13 +303,15 @@ EXAMPLES:
     bookmark --remove           # Remove current directory's bookmark
     bookmark --list             # List and select bookmark (outputs path)
     bookmark --open             # List and open bookmark in Finder
+    bookmark --go               # Navigate to bookmarked directory
     bookmark --listall          # Show all bookmarks with paths
     bookmark --debug            # Edit bookmarks file in VS Code
     bookmark --flush            # Clear all bookmarks
     bookmark --help             # Show this help
 
 RELATED COMMANDS:
-    goto                        # Navigate to bookmarked directory (interactive)
+    goto                        # Navigate to bookmarked directory (shell function)
+                                # Uses 'bookmark --go' internally
 
 FILES:
     ~/.dir-bookmarks.txt        # Bookmark storage file
@@ -317,6 +325,17 @@ NOTES:
 """
         print(help_text.strip())
 
+    def go_bookmark(self):
+        """Navigate to bookmarked directory (same as goto.py functionality)"""
+        if not self._check_bookmarks_exist():
+            return
+
+        bookmark_list = self._display_bookmark_menu()
+        selected_path = self._get_user_selection(bookmark_list)
+
+        if selected_path:
+            print(selected_path)
+
 
 def main():
     manager = BookmarkManager()
@@ -326,6 +345,7 @@ def main():
         "--remove": manager.remove_bookmark,
         "--list": manager.list_bookmarks,
         "--open": manager.open_bookmark,
+        "--go": manager.go_bookmark,
         "--debug": manager.debug_bookmarks,
         "--flush": manager.flush_bookmarks,
         "--listall": manager.listall_bookmarks,
@@ -339,7 +359,7 @@ def main():
         else:
             print(f"Unknown option: {command}", file=sys.stderr)
             print(
-                "Usage: bookmark [--remove|--list|--open|--debug|--flush|--listall|--help]",
+                "Usage: bookmark [--remove|--list|--open|--go|--debug|--flush|--listall|--help]",
                 file=sys.stderr,
             )
             sys.exit(1)
