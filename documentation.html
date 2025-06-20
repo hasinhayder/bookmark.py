@@ -483,8 +483,8 @@ source ~/.zshrc  # or source ~/.bashrc</code></pre>
                             <td>Add current directory as a bookmark with a custom name</td>
                         </tr>
                         <tr>
-                            <td><code>bookmark --go</code></td>
-                            <td>Show list of bookmarks and navigate to selected one</td>
+                            <td><code>goto</code></td>
+                            <td>Navigate to bookmarked directory (shell function)</td>
                         </tr>
                         <tr>
                             <td><code>bookmark --list</code></td>
@@ -561,7 +561,7 @@ bookmark
 # Enter name: myapp
 
 # Now you can jump back from anywhere
-bookmark --go
+goto
 # Select: myapp</code></pre>
                     </div>
                 </div>
@@ -624,7 +624,7 @@ bookmark_count=$(bookmark --list | wc -l)
 echo "You have $bookmark_count bookmarks"
 
 # Navigate programmatically (example)
-bookmark --go &lt;&lt;&lt; "1"  # Go to first bookmark</code></pre>
+goto &lt;&lt;&lt; "1"  # Go to first bookmark</code></pre>
                 </div>
 
                 <h3>Bookmark File Location</h3>
@@ -713,7 +713,7 @@ bookmark --restore ~/bookmark-backup-2025-01-15-143022.txt
 bookmark --listall
 
 # Test navigation to ensure paths are valid
-bookmark --go</code></pre>
+goto</code></pre>
                 </div>
 
                 <div class="info-box">
