@@ -5,6 +5,7 @@ Saves and manages directory bookmarks in ~/.dir-bookmarks.txt
 
 Author: Hasin Hayder
 Repository: https://github.com/hasinhayder/bookomark.py
+Version: 1.0
 """
 
 import os
@@ -334,6 +335,17 @@ NOTES:
 """
         print(help_text.strip())
 
+    def show_info(self):
+        # Display author and repository information
+        info_text = """
+Directory Bookmark Manager
+=========================
+Author: Hasin Hayder
+Repository: https://github.com/hasinhayder/bookomark.py
+Version: 1.0
+"""
+        print(info_text.strip())
+
     def go_bookmark(self):
         # Navigate to bookmarked directory (same as goto.py functionality)
         if not self._check_bookmarks_exist():
@@ -508,6 +520,7 @@ def main():
         "--backup": manager.backup_bookmarks,
         "--restore": manager.restore_bookmarks,
         "--help": manager.show_help,
+        "--version": manager.show_info,  # Added info command
     }
 
     if len(sys.argv) > 1:
