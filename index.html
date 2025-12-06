@@ -1,371 +1,551 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Directory Bookmark Manager - Hasin Hayder</title>
-    <meta name="description" content="A command-line tool to bookmark directories and quickly navigate between them. Simplify your terminal workflow with instant directory bookmarks and navigation.">
-    <meta name="author" content="Hasin Hayder">
-    <meta name="license" content="MIT">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://hasinhayder.github.io/bookomark.py/">
-    <meta property="og:title" content="Directory Bookmark Manager">
-    <meta property="og:description" content="A command-line tool to bookmark directories and quickly navigate between them.">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://hasinhayder.github.io/bookomark.py/">
-    <meta property="twitter:title" content="Directory Bookmark Manager">
-    <meta property="twitter:description" content="A command-line tool to bookmark directories and quickly navigate between them.">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>bookmark.py // navigate faster</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;900&family=Space+Grotesk:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
-
-<body>
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="container">
-            <div class="top-bar-content">
-                <div class="top-bar-info">
-                    <div class="top-bar-item">
-                        <strong>Directory Bookmark Manager</strong>
-                    </div>
-                    <div class="top-bar-item">
-                        Version: <strong>1.0</strong>
-                    </div>
-                    <div class="top-bar-item">
-                        License: <strong>MIT</strong>
-                    </div>
-                </div>
-                <div class="top-bar-links">
-                    <a href="https://github.com/hasinhayder/bookomark.py">GitHub Repository</a>
-                    <a href="https://github.com/hasinhayder/bookomark.py/releases">Releases</a>
-                    <a href="documentation.html">Documentation</a>
-                    <a href="https://github.com/hasinhayder">Author</a>
-                </div>
-            </div>
+<body class="loading">
+    <!-- Terminal Loading Screen -->
+    <div class="terminal-loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-line">$ <span class="typing-text">bookmark.py v3.0</span><span class="cursor">▊</span></div>
+            <div class="loader-line text-center">loading...</div>
         </div>
     </div>
 
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <h1 class="logo">Directory Bookmark Manager</h1>
-                <p class="tagline">Bookmark directories and navigate like a pro in your terminal</p>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="prompt-symbol">$</span>
+                <span class="brand-text">bookmark.py</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features" data-section="features">features</a>
+                <a href="#install" data-section="install">install</a>
+                <a href="#usage" data-section="usage">usage</a>
+                <a href="#commands" data-section="commands">commands</a>
+                <a href="#faq" data-section="faq">faq</a>
+                <a href="https://github.com/hasinhayder/bookomark.py" target="_blank" class="github-link">src/</a>
+            </div>
+        </div>
+    </nav>
 
-                <div class="hero-features">
-                    <div class="hero-feature">
-                        <span class="hero-feature-icon">⚡</span>
-                        <span>Instant Navigation</span>
-                    </div>
-                    <div class="hero-feature">
-                        <span class="hero-feature-icon">🎯</span>
-                        <span>Smart Bookmarks</span>
-                    </div>
-                    <div class="hero-feature">
-                        <span class="hero-feature-icon">💻</span>
-                        <span>Cross Platform</span>
-                    </div>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+
+        <div class="hero-container">
+            <div class="hero-main">
+                <div class="hero-intro">
+                    <h1 class="hero-title">
+                        Jump to any directory
+                        <span class="title-highlight">in seconds</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Bookmark your most-used directories with memorable names.
+                        Navigate between projects instantly with simple commands.
+                    </p>
                 </div>
 
-                <div class="hero-description">
-                    <p>Stop wasting time typing long directory paths. Bookmark your favorite locations and jump to them instantly with simple commands like <code>bookmark</code> and <code>goto</code>.</p>
+                <div class="hero-actions">
+                    <a href="#install" class="btn-primary">
+                        <span>Get Started</span>
+                        <span class="btn-arrow">→</span>
+                    </a>
+                    <a href="https://github.com/hasinhayder/bookomark.py" class="btn-secondary">
+                        <span>View on GitHub</span>
+                        <span class="btn-arrow">↗</span>
+                    </a>
                 </div>
+            </div>
 
-                <div class="cta-buttons">
-                    <a href="https://github.com/hasinhayder/bookomark.py" class="btn btn-primary">
-                        📥 Download
-                    </a>
-                    <a href="#quick-start" class="btn btn-secondary">
-                        🚀 Quick Start
-                    </a>
+            <div class="hero-visual">
+                <div class="mini-terminal">
+                    <div class="mini-terminal-header">
+                        <span class="mini-dot red"></span>
+                        <span class="mini-dot yellow"></span>
+                        <span class="mini-dot green"></span>
+                        <span class="mini-title">bookmark.py</span>
+                    </div>
+                    <div class="mini-terminal-body">
+                        <div class="mini-line">
+                            <span class="mini-prompt">❯</span>
+                            <span class="mini-command">bookmark my-project</span>
+                        </div>
+                        <div class="mini-success">✓ Saved bookmark</div>
+                        <div class="mini-line">
+                            <span class="mini-prompt">❯</span>
+                            <span class="mini-command">goto</span>
+                        </div>
+                        <div class="mini-output">
+                            <span class="mini-option">1) my-project</span>
+                            <span class="mini-option">2) configs</span>
+                            <span class="mini-option">3) scripts</span>
+                        </div>
+                        <div class="mini-line">
+                            <span class="mini-prompt">❯</span>
+                            <span class="mini-cursor">▊</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="hero-stats">
-                    <div class="hero-stat">
-                        <span class="hero-stat-label">MIT Licensed</span>
+                    <div class="stat">
+                        <span class="stat-number">2</span>
+                        <span class="stat-label">Commands</span>
                     </div>
-                    <div class="hero-stat">
-                        <span class="hero-stat-label">Python 3.6+</span>
+                    <div class="stat">
+                        <span class="stat-number">50KB</span>
+                        <span class="stat-label">Size</span>
                     </div>
-                    <div class="hero-stat">
-                        <span class="hero-stat-label">Zero Dependencies</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Features -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Why Use Directory Bookmark Manager?</h2>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Lightning Fast Navigation</h3>
-                    <p class="feature-description">Jump to any bookmarked directory instantly with a simple command. No more typing long paths or navigating through multiple directories.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3 class="feature-title">Smart Directory Management</h3>
-                    <p class="feature-description">Add, remove, and organize your favorite directories with friendly names. Prevent duplicates and manage your workflow efficiently.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🔧</div>
-                    <h3 class="feature-title">Easy Setup</h3>
-                    <p class="feature-description">One-command installation that automatically configures your shell. Works with zsh and bash out of the box.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">💻</div>
-                    <h3 class="feature-title">Cross-Platform</h3>
-                    <p class="feature-description">Works seamlessly on macOS, Linux, and other Unix-like systems. Integrates perfectly with your existing terminal workflow.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🎨</div>
-                    <h3 class="feature-title">Developer Friendly</h3>
-                    <p class="feature-description">Open directories in Finder, edit bookmarks in VS Code, and integrate with shell scripts. Built for power users.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3 class="feature-title">Safe & Reliable</h3>
-                    <p class="feature-description">Robust error handling, input validation, and safe file operations. Your bookmarks are stored securely in a simple text format.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quick Start -->
-    <section id="quick-start" class="quick-start">
-        <div class="container">
-            <h2 class="section-title">Get Started in 4 Simple Steps</h2>
-
-            <div class="quick-start-content">
-                <div>
-                    <ol class="steps">
-                        <li class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h3>Clone the Repository</h3>
-                                <p>Download the project from GitHub to your local machine</p>
-                            </div>
-                        </li>
-
-                        <li class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h3>Run Setup Script</h3>
-                                <p>Execute the automated setup script to configure everything</p>
-                            </div>
-                        </li>
-
-                        <li class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h3>Restart Terminal</h3>
-                                <p>Reload your shell configuration to activate the commands</p>
-                            </div>
-                        </li>
-
-                        <li class="step">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <h3>Start Bookmarking</h3>
-                                <p>Begin using <code>bookmark</code> and <code>goto</code> commands</p>
-                            </div>
-                        </li>
-                    </ol>
-                </div>
-
-                <div>
-                    <div class="code-container">
-                        <div class="code-header">
-                            <span class="code-title">Terminal</span>
-                            <div class="code-dots">
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                            </div>
-                        </div>
-                        <pre><code class="language-bash"># Clone the repository
-git clone https://github.com/hasinhayder/bookomark.py.git
-cd bookomark.py
-
-# Run the setup script
-./setup.sh
-
-# Restart your terminal or reload shell
-source ~/.zshrc
-
-# Start using it!
-bookmark              # Add current directory
-goto                  # Navigate to bookmarks</code></pre>
+                    <div class="stat">
+                        <span class="stat-number">∞</span>
+                        <span class="stat-label">Bookmarks</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Code Demo -->
-    <section class="code-demo">
-        <div class="container">
-            <h2 class="section-title">See It in Action</h2>
-
-            <div class="code-container">
-                <div class="code-header">
-                    <span class="code-title">Example Usage</span>
-                    <div class="code-dots">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
-                <pre><code class="language-bash"># Navigate to your project directory
-cd ~/Projects/MyAwesomeApp
-bookmark
-# Enter: "myapp"
-
-# Go to another directory
-cd ~/Documents/Important
-bookmark
-# Enter: "docs"
-
-# Later, from anywhere:
-goto
-# Shows:
-# 1. docs
-# 2. myapp
-# Select: 2
-# → Instantly jumps to ~/Projects/MyAwesomeApp
-
-# Other useful commands:
-bookmark --list       # List and select (for scripting)
-bookmark --open       # Open in Finder (macOS)
-bookmark --listall    # Show all with paths
-bookmark --remove     # Remove current directory's bookmark
-bookmark --flush      # Clear all bookmarks</code></pre>
-            </div>
+    <!-- Features Grid -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <h2 class="section-title">// FEATURES</h2>
+            <div class="subtitle-line"></div>
         </div>
-    </section>
 
-    <!-- Best Practices -->
-    <section class="best-practices">
-        <div class="container">
-            <h2 class="section-title">Best Practices & Workflows</h2>
-
-            <div class="workflow-grid">
-                <div class="workflow-card">
-                    <div class="workflow-header">
-                        <h3>🔄 Backup & Restore Workflow</h3>
-                        <p>Safe bookmark management for system changes</p>
-                    </div>
-
-                    <div class="code-container">
-                        <div class="code-header">
-                            <span class="code-title">Recommended Workflow</span>
-                            <div class="code-dots">
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                            </div>
-                        </div>
-                        <pre><code class="language-bash"># Before major system changes (OS updates, migrations, etc.)
-bookmark --backup
-# Creates: ~/bookmark-backup-YYYY-MM-DD-HHMMSS.txt
-
-# After system restoration or on new machine:
-bookmark --restore ~/bookmark-backup-2025-01-15-143022.txt
-# Restores all your bookmarks
-
-# Regular backup (recommended weekly):
-bookmark --backup
-
-# View current bookmarks before backup:
-bookmark --listall</code></pre>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="card-header">
+                    <span class="card-icon">[]</span>
+                    <span class="card-title">BOOKMARK</span>
+                </div>
+                <div class="card-content">
+                    <p>Save any directory with a memorable name. No more typing long paths.</p>
+                    <div class="feature-code">
+                        <code>$ bookmark my-project</code>
                     </div>
                 </div>
+            </div>
 
-                <div class="workflow-card">
-                    <div class="workflow-header">
-                        <h3>⚡ Daily Usage Tips</h3>
-                        <p>Maximize your productivity with these patterns</p>
+            <div class="feature-card">
+                <div class="card-header">
+                    <span class="card-icon">→</span>
+                    <span class="card-title">GOTO</span>
+                </div>
+                <div class="card-content">
+                    <p>Jump instantly to any bookmarked directory with interactive selection.</p>
+                    <div class="feature-code">
+                        <code>$ goto</code>
                     </div>
+                </div>
+            </div>
 
-                    <div class="workflow-tips">
-                        <div class="tip">
-                            <span class="tip-icon">📁</span>
-                            <div>
-                                <strong>Organize by Project:</strong>
-                                <p>Use descriptive names like "proj-frontend", "proj-backend", "proj-docs"</p>
-                            </div>
-                        </div>
+            <div class="feature-card">
+                <div class="card-header">
+                    <span class="card-icon">∇</span>
+                    <span class="card-title">BACKUP</span>
+                </div>
+                <div class="card-content">
+                    <p>Automatic timestamped backups. Never lose your directory bookmarks.</p>
+                    <div class="feature-code">
+                        <code>$ bookmark --backup</code>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="tip">
-                            <span class="tip-icon">️</span>
-                            <div>
-                                <strong>Cleanup Regularly:</strong>
-                                <p>Remove outdated bookmarks with <code>bookmark --remove</code></p>
-                            </div>
-                        </div>
+            <div class="feature-card">
+                <div class="card-header">
+                    <span class="card-icon">></span>
+                    <span class="card-title">CROSS-PLATFORM</span>
+                </div>
+                <div class="card-content">
+                    <p>Works seamlessly on macOS, Linux, and Windows with shell detection.</p>
+                    <div class="feature-code">
+                        <code>#!/bin/bash • zsh • fish</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="card-header">
+                    <span class="card-icon">{}</span>
+                    <span class="card-title">DEBUG</span>
+                </div>
+                <div class="card-content">
+                    <p>Built-in debugging tools and maintenance commands for power users.</p>
+                    <div class="feature-code">
+                        <code>$ bookmark --debug</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="card-header">
+                    <span class="card-icon">✓</span>
+                    <span class="card-title">SAFE</span>
+                </div>
+                <div class="card-content">
+                    <p>Duplicate prevention, validation, and safety checks built-in.</p>
+                    <div class="feature-code">
+                        <code>✓ All operations verified</code>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Download -->
-    <section class="download">
-        <div class="container">
-            <div class="download-content">
-                <h2 class="download-title">Ready to Boost Your Productivity?</h2>
-                <p class="download-subtitle">Join developers worldwide who have revolutionized their terminal workflow</p>
-                <p class="download-description">
-                    Stop wasting time navigating through complex directory structures. With Directory Bookmark Manager,
-                    you can bookmark your most-used directories and jump to them instantly with a single command.
-                </p>
-
-                <div class="download-stats">
-                    <div class="stat">
-                        <span class="stat-number">⚡</span>
-                        <span class="stat-label">Lightning Fast</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">🔧</span>
-                        <span class="stat-label">Easy Setup</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">💻</span>
-                        <span class="stat-label">Cross Platform</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">🆓</span>
-                        <span class="stat-label">Free & Open Source</span>
-                    </div>
+    <!-- Installation -->
+    <section class="install" id="install">
+        <div class="install-terminal">
+            <div class="terminal-header">
+                <div class="terminal-controls">
+                    <span class="control close"></span>
+                    <span class="control minimize"></span>
+                    <span class="control maximize"></span>
                 </div>
-
-                <div class="cta-buttons">
-                    <a href="https://github.com/hasinhayder/bookomark.py" class="btn btn-primary">
-                        📥 Get Started Now
-                    </a>
-                    <a href="https://github.com/hasinhayder/bookomark.py/issues" class="btn btn-secondary">
-                        🐛 Report Issues
-                    </a>
+                <div class="terminal-title">installation — bash</div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">git clone https://github.com/hasinhayder/bookomark.py</span>
                 </div>
+                <div class="terminal-line">
+                    <span class="output">Cloning into 'bookmark.py'...</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">cd bookmark.py</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">./setup.sh</span>
+                </div>
+                <div class="output-block">
+                    <div class="output">✓ Python 3.6+ detected</div>
+                    <div class="output">✓ Shell: zsh</div>
+                    <div class="output">✓ Backing up .zshrc</div>
+                    <div class="output success">✓ Installation complete!</div>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">bookmark</span>
+                </div>
+            </div>
+        </div>
 
-                <div class="license-info">
-                    <p>📄 Released under the <strong>MIT License</strong> • Free for commercial and personal use</p>
+        <div class="install-content">
+            <h2 class="install-title">
+                <span class="bracket">&lt;</span>
+                INSTALL
+                <span class="bracket">/&gt;</span>
+            </h2>
+            <p class="install-desc">
+                Three commands. That's it. Bookmark.py works out of the box with automatic shell detection and configuration.
+            </p>
+            <div class="requirements">
+                <div class="req-item">
+                    <span class="req-label">requirements:</span>
+                    <span class="req-value">Python 3.6+ • Bash/Zsh/Fish</span>
+                </div>
+                <div class="req-item">
+                    <span class="req-label">license:</span>
+                    <span class="req-value">MIT • Free forever</span>
+                </div>
+                <div class="req-item">
+                    <span class="req-label">size:</span>
+                    <span class="req-value">~50KB • Lightweight</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage Examples -->
+    <section class="usage" id="usage">
+        <div class="usage-header">
+            <h2 class="usage-title">
+                <span class="prompt-symbol">$</span>
+                USAGE EXAMPLES
+            </h2>
+            <div class="usage-tabs">
+                <button class="tab-btn active" data-tab="basic">BASIC</button>
+                <button class="tab-btn" data-tab="advanced">ADVANCED</button>
+                <button class="tab-btn" data-tab="tips">TIPS</button>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="basic">
+                <div class="code-window">
+                    <div class="window-header">
+                        <span class="window-title">basic_usage.sh</span>
+                    </div>
+                    <pre class="code-content"><code><span class="comment"># Bookmark current directory</span>
+$ <span class="keyword">bookmark</span> my-project
+
+<span class="comment"># Navigate to bookmark</span>
+$ <span class="keyword">goto</span>
+<span class="output">1) configs
+2) my-project  ← SELECTED
+3) scripts</span>
+
+<span class="comment"># List all bookmarks</span>
+$ <span class="keyword">bookmark</span> --list
+
+<span class="comment"># Remove current directory's bookmark</span>
+$ <span class="keyword">bookmark</span> --remove</code></pre>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="advanced">
+                <div class="code-window">
+                    <div class="window-header">
+                        <span class="window-title">advanced_usage.sh</span>
+                    </div>
+                    <pre class="code-content"><code><span class="comment"># Create backup</span>
+$ <span class="keyword">bookmark</span> --backup
+<span class="output">→ ~/.dir-bookmarks-backup-20241206_143022.txt</span>
+
+<span class="comment"># Restore from backup</span>
+$ <span class="keyword">bookmark</span> --restore
+<span class="output">Available backups:
+1) 2024-12-06 14:30:22 (5 bookmarks)
+2) 2024-12-05 09:15:10 (3 bookmarks)</span>
+
+<span class="comment"># Open in file manager</span>
+$ <span class="keyword">bookmark</span> --open
+
+<span class="comment"># Debug mode</span>
+$ <span class="keyword">bookmark</span> --debug
+<span class="output">→ Opening ~/.dir-bookmarks.txt in editor...</span></code></pre>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tips">
+                <div class="code-window">
+                    <div class="window-header">
+                        <span class="window-title">pro_tips.md</span>
+                    </div>
+                    <pre class="code-content"><code><span class="comment"># TIP 1: Use descriptive names</span>
+$ <span class="keyword">bookmark</span> client-xyz-api-v2
+$ <span class="keyword">bookmark</span> personal-blog-hugo
+
+<span class="comment"># TIP 2: Chain with other commands</span>
+$ <span class="keyword">goto</span> configs && <span class="keyword">ls</span> -la
+
+<span class="comment"># TIP 3: Use in scripts</span>
+DIR=$(<span class="keyword">bookmark</span> --go)
+<span class="keyword">cd</span> "$DIR"
+
+<span class="comment"># TIP 4: Regular cleanup</span>
+$ <span class="keyword">bookmark</span> --flush  <span class="comment"># with auto-backup</span></code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Reference -->
+    <section class="commands" id="commands">
+        <div class="commands-header">
+            <h2 class="commands-title">// COMMAND REFERENCE</h2>
+            <div class="subtitle-line"></div>
+        </div>
+
+        <div class="commands-table">
+            <div class="table-row header">
+                <span class="col-command">COMMAND</span>
+                <span class="col-action">ACTION</span>
+            </div>
+
+            <div class="table-row">
+                <span class="col-command"><code>bookmark</code></span>
+                <span class="col-action">Add current directory as bookmark</span>
+            </div>
+
+            <div class="table-row">
+                <span class="col-command"><code>goto</code></span>
+                <span class="col-action">Navigate to bookmarked directory</span>
+            </div>
+
+            <div class="table-row">
+                <span class="col-command"><code>--remove</code></span>
+                <span class="col-action">Remove current directory's bookmark</span>
+            </div>
+
+            <div class="table-row">
+                <span class="col-command"><code>--list</code></span>
+                <span class="col-action">List all bookmarks</span>
+            </div>
+
+            <div class="table-row">
+                <span class="col-command"><code>--backup</code></span>
+                <span class="col-action">Create timestamped backup</span>
+            </div>
+
+            <div class="table-row">
+                <span class="col-command"><code>--restore</code></span>
+                <span class="col-action">Restore from backup</span>
+            </div>
+
+            <div class="table-row">
+                <span class="col-command"><code>--open</code></span>
+                <span class="col-action">Open in file manager</span>
+            </div>
+
+            <div class="table-row">
+                <span class="col-command"><code>--flush</code></span>
+                <span class="col-action">Clear all bookmarks (with backup)</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download CTA -->
+    <section class="download" id="download">
+        <div class="download-terminal">
+            <div class="terminal-header">
+                <div class="terminal-controls">
+                    <span class="control close"></span>
+                    <span class="control minimize"></span>
+                    <span class="control maximize"></span>
+                </div>
+                <div class="terminal-title">download — bookmark.py</div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">wget https://github.com/hasinhayder/bookomark.py/archive/main.zip</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">→ bookmark.py-main.zip 100%[====>] 50.2KB --.-KB/s</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">unzip bookmark.py-main.zip</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">→ Archive extracted</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">cd bookmark.py-main && ./setup.sh</span>
+                </div>
+                <div class="terminal-line success">
+                    <span class="output">✓ Ready to use!</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="download-content">
+            <h2 class="download-title">
+                <span class="bracket">&lt;</span>
+                GET STARTED NOW
+                <span class="bracket">/&gt;</span>
+            </h2>
+            <p class="download-desc">
+                Join thousands of developers who navigate faster with bookmark.py
+            </p>
+            <div class="download-buttons">
+                <a href="https://github.com/hasinhayder/bookomark.py/archive/refs/heads/main.zip" class="download-btn primary">
+                    <span class="btn-icon">⬇</span>
+                    <span class="btn-text">Download ZIP</span>
+                    <span class="file-size">50KB</span>
+                </a>
+                <a href="https://github.com/hasinhayder/bookomark.py" class="download-btn secondary">
+                    <span class="btn-icon">⌨</span>
+                    <span class="btn-text">Clone Repository</span>
+                    <span class="git-hash">git@github</span>
+                </a>
+            </div>
+            <div class="terminal-shortcuts">
+                <div class="shortcut">
+                    <kbd>bookmark</kbd>
+                    <span>Add current directory</span>
+                </div>
+                <div class="shortcut">
+                    <kbd>bookmark --list</kbd>
+                    <span>List all bookmarks</span>
+                </div>
+                <div class="shortcut">
+                    <kbd>goto</kbd>
+                    <span>Jump to bookmark</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="section-header">
+            <h2 class="section-title">// FREQUENTLY ASKED QUESTIONS</h2>
+            <div class="subtitle-line"></div>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-icon">$</span>
+                    <h3>What shells does bookmark.py support?</h3>
+                </div>
+                <div class="faq-answer">
+                    <p>bookmark.py supports all major shells including Bash, Zsh, and Fish. It automatically detects your shell during installation and configures the appropriate integration.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-icon">~</span>
+                    <h3>Where are my bookmarks stored?</h3>
+                </div>
+                <div class="faq-answer">
+                    <p>Bookmarks are stored in <code>~/.dir-bookmarks.txt</code> in your home directory. Each bookmark contains the path and name you assigned, making it easy to edit or share if needed.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-icon">&gt;</span>
+                    <h3>Can I sync bookmarks across machines?</h3>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! You can backup your bookmarks using <code>bookmark --backup</code> which creates a timestamped file. Simply copy this file to your new machine and restore with <code>bookmark --restore</code>.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-icon">[]</span>
+                    <h3>Is bookmark.py fast?</h3>
+                </div>
+                <div class="faq-answer">
+                    <p>Extremely! bookmark.py is written in Python and optimized for speed. Navigation is instantaneous, and the entire script is only ~50KB with zero dependencies.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-icon">#!</span>
+                    <h3>Is my data safe?</h3>
+                </div>
+                <div class="faq-answer">
+                    <p>Absolutely. bookmark.py creates automatic backups before any changes. All operations are validated, and the tool won't let you accidentally delete important directories or create duplicate bookmarks.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-icon">*</span>
+                    <h3>Can I customize bookmark.py?</h3>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! bookmark.py is open source (MIT license). You can modify the script to add features, change the interface, or integrate with other tools. The code is clean and well-documented.</p>
                 </div>
             </div>
         </div>
@@ -373,67 +553,39 @@ bookmark --listall</code></pre>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div>
-                    <p>&copy; 2025 Hasin Hayder. Released under MIT License.</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <span class="prompt-symbol">$</span>
+                    <span>bookmark.py</span>
                 </div>
-
-                <div class="footer-links">
-                    <a href="https://github.com/hasinhayder/bookomark.py">GitHub</a>
-                    <a href="documentation.html">Documentation</a>
-                    <a href="https://github.com/hasinhayder/bookomark.py/blob/main/LICENSE">License</a>
-                    <a href="https://github.com/hasinhayder/bookomark.py/issues">Issues</a>
-                    <a href="https://github.com/hasinhayder">Author</a>
-                </div>
+                <p>A minimalist directory bookmarking tool for developers who value efficiency.</p>
             </div>
+            <div class="footer-section">
+                <h3>NAVIGATION</h3>
+                <a href="#features">features</a>
+                <a href="#install">install</a>
+                <a href="#usage">usage</a>
+                <a href="#commands">commands</a>
+                <a href="#faq">faq</a>
+            </div>
+            <div class="footer-section">
+                <h3>SOURCE</h3>
+                <a href="https://github.com/hasinhayder/bookomark.py">GitHub</a>
+                <a href="https://github.com/hasinhayder/bookomark.py/issues">Issues</a>
+                <a href="https://github.com/hasinhayder/bookomark.py/blob/main/LICENSE">License (MIT)</a>
+            </div>
+            <div class="footer-section">
+                <h3>AUTHOR</h3>
+                <p>Hasin Hayder</p>
+                <a href="https://github.com/hasinhayder">@hasinhayder</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 bookmark.py • MIT License • Made with ♥ for developers</p>
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
-
-    <script>
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Add scroll animation to feature cards
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observe feature cards for animation
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.feature-card');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-                observer.observe(card);
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
-
 </html>
