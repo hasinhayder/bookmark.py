@@ -1,5 +1,5 @@
 #!/bin/bash
-# Comprehensive test script for Directory Bookmark Manager v2.0
+# Comprehensive test script for Directory Bookmark Manager v3.0
 # Author: Hasin Hayder
 # Repository: https://github.com/hasinhayder/bookomark.py
 
@@ -97,7 +97,7 @@ cleanup_test_files() {
 
 # Main test suite
 main() {
-    echo "Directory Bookmark Manager v2.0 - Comprehensive Test Suite"
+    echo "Directory Bookmark Manager v3.0 - Comprehensive Test Suite"
     echo "=========================================================="
     echo "Author: Hasin Hayder"
     echo "Repository: https://github.com/hasinhayder/bookomark.py"
@@ -241,7 +241,7 @@ main() {
 # Handle script arguments
 case "${1:-}" in
     "--help"|"-h")
-        echo "Directory Bookmark Manager Test Suite v2.0"
+        echo "Directory Bookmark Manager Test Suite v3.0"
         echo ""
         echo "Usage: $0 [OPTIONS]"
         echo ""
@@ -262,7 +262,7 @@ case "${1:-}" in
         exit 0
         ;;
     "--version"|"-v")
-        echo "Directory Bookmark Manager Test Suite v2.0"
+        echo "Directory Bookmark Manager Test Suite v3.0"
         exit 0
         ;;
     "")

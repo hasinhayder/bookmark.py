@@ -1,11 +1,11 @@
 #!/bin/bash
-# Setup script for Directory Bookmark Manager v2.0
+# Setup script for Directory Bookmark Manager v3.0
 # Author: Hasin Hayder
 # Repository: https://github.com/hasinhayder/bookomark.py
 
 set -euo pipefail  # Exit on error, undefined vars, and pipe failures
 
-VERSION="2.0"
+VERSION="3.0"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SHELL_CONFIG=""
 INSTALL_TYPE="new"
