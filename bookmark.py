@@ -658,8 +658,7 @@ Platform: Cross-platform (macOS, Linux, Windows)
         except EOFError:
             print("\nCancelled.", file=sys.stderr)
 
-
-def _get_valid_name(self, prompt: str) -> Optional[str]:
+    def _get_valid_name(self, prompt: str) -> Optional[str]:
         """Get a valid bookmark name from user input.
         
         Args:
