@@ -36,7 +36,7 @@ class BookmarkManager:
                 with open(self.bookmark_file, "r", encoding="utf-8") as f:
                     for line_num, line in enumerate(f, 1):
                         line = line.strip()
-                        if not line or "|" not in line:
+                        if not line or line.startswith("#") or "|" not in line:
                             continue
                         
                         # Validate line format
