@@ -5,169 +5,88 @@
 # Repository: https://github.com/hasinhayder/bookomark.py
 # This script should be sourced, not executed directly
 
-# Find bookmark.py script with multiple fallback strategies
-_find_bookmark_script() {
-    local script_name="bookmark.py"
-    local script_path=""
-    
-    # Strategy 1: Try to get script directory from BASH_SOURCE
-    if [[ -n "${BASH_SOURCE[0]:-}" ]]; then
-        local this_script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-        script_path="$this_script_dir/$script_name"
-        if [[ -f "$script_path" ]]; then
-            echo "$script_path"
-            return 0
-        fi
-    fi
-    
-    # Strategy 2: Try to get script directory from sourced file
-    if [[ -n "${BASH_SOURCE[1]:-}" ]]; then
-        local parent_script_dir="$(cd "$(dirname "${BASH_SOURCE[1]}")" && pwd)"
-        script_path="$parent_script_dir/$script_name"
-        if [[ -f "$script_path" ]]; then
-            echo "$script_path"
-            return 0
-        fi
-    fi
-    
-    # Strategy 3: Check common installation directories
-    local common_dirs=(
-        "$HOME/.local/share/bookmark-manager"
-        "$HOME/bin"
-        "/usr/local/bin"
-        "/opt/bookmark-manager"
-    )
-    
-    for dir in "${common_dirs[@]}"; do
-        script_path="$dir/$script_name"
-        if [[ -f "$script_path" ]]; then
-            echo "$script_path"
-            return 0
-        fi
-    done
-    
-    # Strategy 4: Check if bookmark command exists in PATH
-    if command -v bookmark &> /dev/null; then
-        # Try to find where bookmark points to
-        local bookmark_cmd=$(command -v bookmark 2>/dev/null || which bookmark 2>/dev/null || true)
-        if [[ -n "$bookmark_cmd" ]]; then
-            # Extract the path from the alias/function
-            if [[ "$bookmark_cmd" == *"python3"* ]]; then
-                script_path=$(echo "$bookmark_cmd" | sed 's/.*python3 \(.*\)".*/\1/')
-                if [[ -f "$script_path" ]]; then
-                    echo "$script_path"
-                    return 0
-                fi
-            fi
-        fi
-    fi
-    
-    # Strategy 5: Check current directory
-    if [[ -f "./$script_name" ]]; then
-        script_path="./$script_name"
-        echo "$script_path"
+# Locate bookmark.py using BOOKMARK_SCRIPT_DIR (set by setup.sh)
+_get_bookmark_script() {
+    # Use configured directory if present
+    if [[ -n "${BOOKMARK_SCRIPT_DIR:-}" ]] && [[ -f "${BOOKMARK_SCRIPT_DIR}/bookmark.py" ]]; then
+        echo "${BOOKMARK_SCRIPT_DIR}/bookmark.py"
         return 0
     fi
-    
-    # Strategy 6: Try to find via bookmark command output
-    if command -v bookmark &> /dev/null; then
-        # Try running bookmark --help to see if it works
-        if bookmark --help &> /dev/null; then
-            # If it works, assume the installation is correct
-            # and try to find the script via the alias/function definition
-            local alias_def=$(alias bookmark 2>/dev/null || true)
-            if [[ -n "$alias_def" ]]; then
-                script_path=$(echo "$alias_def" | sed 's/.*"\(.*\)".*/\1/')
-                if [[ -f "$script_path" ]]; then
-                    echo "$script_path"
-                    return 0
-                fi
-            fi
+
+    # Fallback: check the same directory as this file
+    if [[ -n "${BASH_SOURCE[0]:-}" ]]; then
+        local this_script_dir
+        this_script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+        if [[ -f "$this_script_dir/bookmark.py" ]]; then
+            echo "$this_script_dir/bookmark.py"
+            return 0
         fi
     fi
-    
-    # If all strategies fail
+
+    # Fallback: if a 'bookmark' command exists in PATH, use it
+    if command -v bookmark >/dev/null 2>&1; then
+        echo "bookmark"
+        return 0
+    fi
+
+    # Nothing found
     echo "" >&2
-    echo "Error: Could not locate bookmark.py script." >&2
-    echo "Please ensure bookmark.py is in the same directory as this script," >&2
-    echo "or that the bookmark command is properly configured." >&2
-    echo "You can run the setup script again: ./setup.sh" >&2
+    echo "Error: Could not locate bookmark.py. Set BOOKMARK_SCRIPT_DIR in your shell config." >&2
     return 1
 }
 
 # Enhanced goto function with better error handling
 goto() {
-    # Find the bookmark script
-    local bookmark_script
-    bookmark_script=$(_find_bookmark_script)
-    
-    if [[ -z "$bookmark_script" ]]; then
-        return 1
+    # Determine script directory (prefer explicit export)
+    local script_dir selected_path cmd
+
+    if [[ -n "${BOOKMARK_SCRIPT_DIR:-}" ]] && [[ -f "${BOOKMARK_SCRIPT_DIR}/bookmark.py" ]]; then
+        script_dir="$BOOKMARK_SCRIPT_DIR"
+    elif [[ -n "${BASH_SOURCE[0]:-}" ]]; then
+        script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+        if [[ ! -f "$script_dir/bookmark.py" ]]; then
+            script_dir=""
+        fi
     fi
-    
-    # Check if Python 3 is available
-    if ! command -v python3 &> /dev/null; then
-        echo "Error: Python 3 is required but not found in PATH." >&2
-        return 1
+
+    # If no script_dir yet, try PATH or current dir
+    if [[ -z "$script_dir" ]]; then
+        if command -v bookmark >/dev/null 2>&1; then
+            cmd="bookmark"
+        elif [[ -f ./bookmark.py ]]; then
+            script_dir="."
+        else
+            echo "Error: bookmark.py not found. Please set BOOKMARK_SCRIPT_DIR or run setup." >&2
+            return 1
+        fi
     fi
-    
-    # Run bookmark --go and capture the output
-    # Use a timeout to prevent hanging
-    local selected_path
-    if command -v timeout &> /dev/null; then
-        # Use timeout if available (Linux)
-        selected_path=$(timeout 30 python3 "$bookmark_script" --go 2>/dev/null)
-    elif command -v gtimeout &> /dev/null; then
-        # Use gtimeout on macOS (from coreutils)
-        selected_path=$(gtimeout 30 python3 "$bookmark_script" --go 2>/dev/null)
-    else
-        # No timeout available, run without it
-        selected_path=$(python3 "$bookmark_script" --go 2>/dev/null)
+
+    # If cmd not set, use python3 on the script
+    if [[ -z "${cmd:-}" ]]; then
+        cmd="python3 \"$script_dir/bookmark.py\""
     fi
-    
-    local exit_code=$?
-    
-    # Check if the command was successful
-    if [[ $exit_code -ne 0 ]]; then
-        echo "Error: Failed to run bookmark manager." >&2
-        echo "Please check that bookmark.py is working correctly." >&2
-        return 1
-    fi
-    
-    # Check if a path was returned
+
+    # Run interactive selection with stdin/stdout attached to the terminal
+    # Capture only the stdout (the final path)
+    selected_path=$(eval $cmd --go < /dev/tty 2>/dev/tty)
+
     if [[ -z "$selected_path" ]]; then
         echo "No directory selected." >&2
         return 1
     fi
-    
-    # Check if the selected path exists and is a directory
+
     if [[ ! -d "$selected_path" ]]; then
         echo "Error: Directory not found: $selected_path" >&2
         return 1
     fi
-    
-    # Check if we have permission to access the directory
-    if [[ ! -r "$selected_path" ]]; then
-        echo "Error: Permission denied accessing: $selected_path" >&2
-        return 1
-    fi
-    
-    # Change to the directory
+
     echo "Changing to: $selected_path" >&2
-    cd "$selected_path" || {
-        echo "Error: Failed to change to directory: $selected_path" >&2
-        return 1
-    }
-    
-    # Show the current directory
+    cd "$selected_path" || { echo "Error: Failed to change to directory: $selected_path" >&2; return 1; }
     pwd >&2
-    
-    # Optional: Show directory contents (commented out by default)
-    # ls -la >&2
 }
 
 # Optional: Add tab completion for goto function
-if [[ -n "${BASH_VERSION:-}" ]]; then
+if [[ -n "${BASH_VERSION:-}" ]] && [[ $- == *i* ]] && type complete >/dev/null 2>&1; then
     _goto_completion() {
         local cur prev opts
         COMPREPLY=()
@@ -225,11 +144,13 @@ Troubleshooting:
 EOF
 }
 
-# Export the function so it's available in the current shell
-export -f goto
+# Export the function so it's available in the current shell (only in bash)
+if [[ -n "${BASH_VERSION:-}" ]]; then
+    export -f goto
+fi
 
 # Show a welcome message if this is an interactive shell
-if [[ "${PS1:-}" != "" ]] && [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     echo "Warning: This script should be sourced, not executed directly." >&2
     echo "Please run: source $0" >&2
     echo "Or add it to your shell configuration file." >&2

@@ -183,8 +183,12 @@ add_configuration() {
         echo ""
         echo "# Directory Bookmark Manager v$VERSION"
         echo "# https://github.com/hasinhayder/bookomark.py"
-        echo "alias bookmark='python3 \"${SCRIPT_DIR}/bookmark.py\"'"
-        echo "source \"${SCRIPT_DIR}/goto_function.sh\""
+        echo "# Export the script directory so functions can find bookmark.py"
+        echo "export BOOKMARK_SCRIPT_DIR=\"${SCRIPT_DIR}\""
+        echo "# Prepend the script directory to PATH so 'bookmark' can be called directly"
+        echo "export PATH=\"\$BOOKMARK_SCRIPT_DIR:\$PATH\""
+        echo "# Source the goto function (uses BOOKMARK_SCRIPT_DIR)"
+        echo "source \"\$BOOKMARK_SCRIPT_DIR/goto_function.sh\""
         echo "# End Directory Bookmark Manager"
     } >> "$SHELL_CONFIG"
     
@@ -276,6 +280,14 @@ main() {
     log_info "Detected shell: $(basename "$SHELL")"
     log_info "Shell config file: $SHELL_CONFIG"
     echo ""
+
+    # Detect if the setup script is being sourced into the current shell
+    # If it is, we can export BOOKMARK_SCRIPT_DIR and PATH into the
+    # current session so the user can use commands immediately.
+    local _setup_sourced=false
+    if [[ "${BASH_SOURCE[0]}" != "$0" ]]; then
+        _setup_sourced=true
+    fi
     
     # Check for existing installation
     check_existing_installation
@@ -303,6 +315,24 @@ main() {
     
     # Add new configuration
     add_configuration
+
+    # If setup was sourced, export into the current shell and source goto
+    if [[ "$_setup_sourced" == "true" ]]; then
+        export BOOKMARK_SCRIPT_DIR="$SCRIPT_DIR"
+        export PATH="$BOOKMARK_SCRIPT_DIR:$PATH"
+        # Source the goto file into current shell so function is immediately available
+        if [[ -r "$BOOKMARK_SCRIPT_DIR/goto_function.sh" ]]; then
+            # shellcheck disable=SC1090
+            source "$BOOKMARK_SCRIPT_DIR/goto_function.sh"
+        fi
+        log_success "BOOKMARK_SCRIPT_DIR exported into current session."
+    else
+        # If not sourced, give the user a one-line command they can copy to enable immediately
+        echo "To enable the bookmark commands in your current session without restarting, run:" >&2
+        echo "  source \"$SHELL_CONFIG\"" >&2
+        echo "Or run:" >&2
+        echo "  export BOOKMARK_SCRIPT_DIR=\"$SCRIPT_DIR\" && export PATH=\"\$BOOKMARK_SCRIPT_DIR:\$PATH\" && source \"$SCRIPT_DIR/goto_function.sh\"" >&2
+    fi
     
     # Test installation
     if ! test_installation; then
