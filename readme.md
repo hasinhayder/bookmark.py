@@ -1,4 +1,4 @@
-# 🚀 Bookmark.py - Your Directory Navigator
+# Bookmark.py - Your Directory Navigator
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.6%2B-brightgreen.svg)
@@ -9,7 +9,7 @@ Tired of typing long paths? Bookmark.py is your magical teleportation device for
 
 Jump between your favorite folders with just two commands: `bookmark` and `goto`. No more cd-ing through endless directories!
 
-## ✨ Quick Start
+## Quick Start
 
 ```bash
 # 1. Clone this repo
@@ -24,7 +24,7 @@ bookmark  # Save your current directory
 goto      # Jump to any bookmarked directory
 ```
 
-## 🎯 How It Works
+## How It Works
 
 ### Save Your Favorite Spots
 ```bash
@@ -35,7 +35,7 @@ cd ~/projects/awesome-app
 bookmark
 # Enter name: awesome
 
-# That's it! Your spot is saved forever 🎉
+# That's it! Your spot is saved forever 
 ```
 
 ### Teleport Instantly
@@ -46,10 +46,10 @@ goto
 # 2. docs
 # 3. config
 # Select: 1
-# Poof! You're now in ~/projects/awesome-app ✨
+# Poof! You're now in ~/projects/awesome-app 
 ```
 
-## 🛠️ Cool Tricks
+## Cool Tricks
 
 | Command | What It Does |
 |---------|--------------|
@@ -62,7 +62,7 @@ goto
 | `bookmark --flush` | Clear all bookmarks |
 | `goto` | Jump to any bookmarked directory |
 
-## 🎮 Pro Tips
+## Pro Tips
 
 ### File Manager Magic
 ```bash
@@ -70,24 +70,24 @@ bookmark --open
 # 1. awesome
 # 2. docs
 # Select: 1
-# Opens ~/projects/awesome-app in Finder/Explorer/File Manager 📂
+# Opens ~/projects/awesome-app in Finder/Explorer/File Manager 
 ```
 
 ### Backup Your Bookmarks
 ```bash
 bookmark --backup
 # Creates: ~/.dir-bookmarks-backup-20231207_143025.txt
-# Your bookmarks are safe! 🛡️
+# Your bookmarks are safe! 
 ```
 
 ### Emergency Restore
 ```bash
 bookmark --restore
 # Shows all your backups with timestamps
-# Pick one and restore your bookmarks 🔄
+# Pick one and restore your bookmarks 
 ```
 
-## 🌟 Why You'll Love It
+## Why You'll Love It
 
 - **Lightning Fast** - Jump to any directory in seconds
 - **Cross-Platform** - Works on macOS, Linux, and Windows
@@ -95,22 +95,22 @@ bookmark --restore
 - **Safe & Sound** - Automatic backups before any changes
 - **No More Typos** - Say goodbye to long path typing
 
-## 📁 What's Inside
+## What's Inside
 
-- `bookmark.py` - The magic wand ✨
-- `goto_function.sh` - The teleportation device 🌀
-- `setup.sh` - The installation wizard 🧙‍♂️
+- `bookmark.py` - The magic wand 
+- `goto_function.sh` - The teleportation device 
+- `setup.sh` - The installation wizard 
 
-## 🤝 Contributing
+## Contributing
 
 Found a bug or have an idea? [Open an issue](https://github.com/hasinhayder/bookomark.py/issues) or submit a pull request!
 
-## 📄 License
+## License
 
-MIT License - Use it however you want! 🎉
+MIT License - Use it however you want! 
 
 ---
 
 **Made with ❤️ by [Hasin Hayder](https://github.com/hasinhayder)**
 
-*Stop walking, start teleporting!* 🚀
+*Stop walking, start teleporting!* 
