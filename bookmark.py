@@ -189,6 +189,360 @@ class BookmarkManager:
         print("-" * width, file=sys.stderr)
         return bookmark_list
 
+    def _resolve_bookmark_name(self, query: str) -> Optional[str]:
+        """Resolve a bookmark name (exact or unique partial) to a path.
+
+        Args:
+            query: Bookmark name or partial match (case-insensitive)
+
+        Returns:
+            Optional[str]: Matched path, or None if no unique match
+        """
+        if not query:
+            return None
+        bookmark_list = self._get_sorted_bookmark_list()
+        q = query.lower()
+        exact = [(n, p) for n, p in bookmark_list if n.lower() == q]
+        if len(exact) == 1:
+            return exact[0][1]
+        partial = [(n, p) for n, p in bookmark_list if q in n.lower()]
+        if len(partial) == 1:
+            return partial[0][1]
+        if len(partial) > 1:
+            print(f"Ambiguous bookmark '{query}' matches:", file=sys.stderr)
+            for n, p in partial:
+                print(f"  - {n} -> {p}", file=sys.stderr)
+            return None
+        print(f"No bookmark matching '{query}'.", file=sys.stderr)
+        return None
+
+    def _interactive_select(
+        self,
+        bookmark_list: List[Tuple[str, str]],
+        title: str = "Bookmarked directories",
+        prompt: str = "\u2191/\u2193 move  type-to-filter  # jump  Enter  q/Esc quit",
+    ) -> Optional[str]:
+        """Interactive arrow-key selector with type-to-filter.
+
+        Args:
+            bookmark_list: List of (name, path) tuples
+            title: Title to display above the menu
+            prompt: Footer hint shown below the menu
+
+        Returns:
+            Optional[str]: Selected path, or None if cancelled
+        """
+        if not bookmark_list:
+            return None
+
+        fd = None
+        old_settings = None
+        try:
+            fd = sys.stdin.fileno()
+            if not os.isatty(fd):
+                raise OSError("stdin is not a tty")
+            import termios
+            import tty
+
+            old_settings = termios.tcgetattr(fd)
+            tty.setraw(fd)
+            interactive = True
+        except Exception:
+            interactive = False
+
+        if not interactive:
+            return self._get_user_selection(
+                bookmark_list, "Select a directory (number) or 0 to exit: "
+            )
+
+        import termios
+        import shutil
+        import select as select_mod
+        import time as time_mod
+
+        index = 0
+        query = ""
+        digit_buf = ""
+        digit_deadline = 0.0
+
+        def term_size() -> Tuple[int, int]:
+            try:
+                s = shutil.get_terminal_size((80, 24))
+                return max(s.columns, 40), max(s.lines, 8)
+            except Exception:
+                return 80, 24
+
+        def filtered() -> List[Tuple[str, str]]:
+            if not query:
+                return list(bookmark_list)
+            q = query.lower()
+            return [(n, p) for n, p in bookmark_list if q in n.lower() or q in p.lower()]
+
+        def truncate(text: str, max_len: int) -> str:
+            if max_len < 4 or len(text) <= max_len:
+                return text
+            return text[: max_len - 1] + "\u2026"
+
+        def visible_window(items: List[Tuple[str, str]], cols: int, rows: int):
+            n = len(items)
+            # title, sep, path preview, sep, filter, prompt = 6 fixed lines
+            avail = max(rows - 6, 1)
+            if n <= avail:
+                return 0, n, avail
+            half = avail // 2
+            start = max(0, min(n - avail, index - half))
+            end = start + avail
+            return start, end, avail
+
+        def clear_block(total_lines: int) -> None:
+            if total_lines <= 0:
+                return
+            sys.stderr.write(f"\033[{total_lines}A")
+            for _ in range(total_lines):
+                sys.stderr.write("\r\033[K\n")
+            sys.stderr.write(f"\033[{total_lines}A")
+            sys.stderr.flush()
+
+        def render() -> int:
+            items = filtered()
+            cols, rows = term_size()
+            n = len(items)
+            start, end, _ = visible_window(items, cols, rows)
+            sep = "-" * min(cols - 1, 60)
+
+            lines = [f"{title} ({n}/{len(bookmark_list)})", sep]
+            if n == 0:
+                lines.append("  (no matches)")
+            else:
+                for i in range(start, end):
+                    name, path = items[i]
+                    num = f"{i + 1:2d}"
+                    if i == index:
+                        label = truncate(f"> {num}. {name}", cols - 1)
+                        lines.append(f"\033[7m{label}\033[0m")
+                    else:
+                        lines.append(truncate(f"  {num}. {name}", cols - 1))
+                if n > (end - start):
+                    more_above = start > 0
+                    more_below = end < n
+                    if more_above and more_below:
+                        lines.append("  \u25b2 more  \u25bc more")
+                    elif more_above:
+                        lines.append("  \u25b2 more")
+                    else:
+                        lines.append("  \u25bc more")
+
+            lines.append(sep)
+            if n > 0 and 0 <= index < n:
+                lines.append(truncate(f"  {items[index][1]}", cols - 1))
+            else:
+                lines.append("  ")
+            filter_line = f"  filter: {query}_" if query else "  filter: (type to search)"
+            lines.append(truncate(filter_line, cols - 1))
+            lines.append(truncate(prompt, cols - 1))
+
+            # In raw mode LF does NOT return to column 0 — use CRLF.
+            sys.stderr.write("\r\n".join(lines) + "\r\n")
+            sys.stderr.flush()
+            return len(lines)
+
+        def _raw_read(timeout: Optional[float] = None) -> str:
+            """Read one byte unbuffered (avoids TextIOWrapper eating escape sequences)."""
+            if timeout is not None:
+                ready = select_mod.select([fd], [], [], timeout)[0]
+                if not ready:
+                    return ""
+            data = os.read(fd, 1)
+            if not data:
+                return ""
+            try:
+                return data.decode("utf-8", errors="ignore")
+            except Exception:
+                return ""
+
+        def read_key() -> str:
+            ch = _raw_read()
+            if not ch:
+                return ""
+            if ch == "\x1b":
+                # Peek for multi-byte sequences without using buffered stdin
+                seq = _raw_read(0.05)
+                if not seq:
+                    return "esc"
+                if seq == "[":
+                    rest = _raw_read(0.05)
+                    if not rest:
+                        return "esc"
+                    if rest in "ABCD":
+                        return {"A": "up", "B": "down", "C": "right", "D": "left"}[rest]
+                    if rest in "56":
+                        _raw_read(0.05)  # consume trailing ~
+                        return "pgup" if rest == "5" else "pgdn"
+                    if rest == "H":
+                        return "home"
+                    if rest == "F":
+                        return "end"
+                    if rest in "1478":
+                        tail = _raw_read(0.05)
+                        if tail == "~":
+                            return "home" if rest in "17" else "end"
+                    return "esc"
+                if seq == "O":
+                    rest = _raw_read(0.05)
+                    return {
+                        "A": "up",
+                        "B": "down",
+                        "C": "right",
+                        "D": "left",
+                        "H": "home",
+                        "F": "end",
+                    }.get(rest, "esc")
+                return "esc"
+            return ch
+
+        def cancel(msg: str) -> None:
+            clear_block(total_lines)
+            sys.stderr.write("\033[?25h")  # show cursor
+            sys.stderr.write(msg + "\r\n")
+            sys.stderr.flush()
+
+        def flush_digit_buf() -> Optional[str]:
+            nonlocal digit_buf, digit_deadline, index
+            if not digit_buf:
+                return None
+            items = filtered()
+            num = int(digit_buf)
+            digit_buf = ""
+            digit_deadline = 0.0
+            if num == 0:
+                return "cancel"
+            if 1 <= num <= len(items):
+                return items[num - 1][1]
+            return None
+
+        sys.stderr.write("\033[?25l")  # hide cursor
+        total_lines = render()
+        try:
+            while True:
+                # Multi-digit number entry: auto-commit after short idle
+                timeout = None
+                if digit_buf and digit_deadline:
+                    remaining = digit_deadline - time_mod.time()
+                    if remaining <= 0:
+                        result = flush_digit_buf()
+                        if result == "cancel":
+                            cancel("Cancelled.")
+                            return None
+                        if result:
+                            clear_block(total_lines)
+                            sys.stderr.write("\033[?25h")
+                            return result
+                        clear_block(total_lines)
+                        total_lines = render()
+                        continue
+                    timeout = remaining
+
+                if timeout is not None:
+                    ready = select_mod.select([fd], [], [], timeout)[0]
+                    if not ready:
+                        continue
+                key = read_key()
+                items = filtered()
+                n = len(items)
+
+                if key == "up":
+                    if n:
+                        index = (index - 1) % n
+                elif key == "down":
+                    if n:
+                        index = (index + 1) % n
+                elif key == "pgup":
+                    if n:
+                        index = max(0, index - max(term_size()[1] - 6, 1))
+                elif key == "pgdn":
+                    if n:
+                        index = min(n - 1, index + max(term_size()[1] - 6, 1))
+                elif key == "home":
+                    index = 0
+                elif key == "end":
+                    if n:
+                        index = n - 1
+                elif key in ("\r", "\n"):
+                    if digit_buf:
+                        result = flush_digit_buf()
+                        if result == "cancel":
+                            cancel("Cancelled.")
+                            return None
+                        if result:
+                            clear_block(total_lines)
+                            sys.stderr.write("\033[?25h")
+                            return result
+                    if n and 0 <= index < n:
+                        clear_block(total_lines)
+                        sys.stderr.write("\033[?25h")
+                        return items[index][1]
+                elif key == "\x03":  # Ctrl-C
+                    cancel("Cancelled.")
+                    return None
+                elif key == "esc":
+                    if query or digit_buf:
+                        query = ""
+                        digit_buf = ""
+                        digit_deadline = 0.0
+                        index = 0
+                    else:
+                        cancel("Cancelled.")
+                        return None
+                elif key == "\x7f" or key == "\x08":  # Backspace
+                    if digit_buf:
+                        digit_buf = digit_buf[:-1]
+                        digit_deadline = time_mod.time() + 0.8 if digit_buf else 0.0
+                    elif query:
+                        query = query[:-1]
+                        items = filtered()
+                        index = min(index, max(len(items) - 1, 0))
+                elif key.isdigit() and not query:
+                    # Digits jump by number only when not filtering by text
+                    digit_buf += key
+                    digit_deadline = time_mod.time() + 0.8
+                    items = filtered()
+                    num = int(digit_buf)
+                    if num == 0 and len(digit_buf) == 1:
+                        cancel("Cancelled.")
+                        return None
+                    if 1 <= num <= len(items) and num * 10 > len(items):
+                        result = flush_digit_buf()
+                        if result and result != "cancel":
+                            clear_block(total_lines)
+                            sys.stderr.write("\033[?25h")
+                            return result
+                elif key == "\x15":  # Ctrl-U clear filter
+                    query = ""
+                    digit_buf = ""
+                    index = 0
+                elif len(key) == 1 and key.isprintable() and key not in ("\t",):
+                    # Type-to-filter (letters, digits while filtering, symbols)
+                    if key == "q" and not query and not digit_buf:
+                        cancel("Cancelled.")
+                        return None
+                    if digit_buf:
+                        digit_buf = ""
+                        digit_deadline = 0.0
+                    query += key
+                    items = filtered()
+                    index = 0
+                else:
+                    continue
+
+                if index >= len(filtered()):
+                    index = max(len(filtered()) - 1, 0)
+                clear_block(total_lines)
+                total_lines = render()
+        finally:
+            sys.stderr.write("\033[?25h")  # always show cursor again
+            sys.stderr.flush()
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+
     def _get_user_selection(
         self, bookmark_list: List[Tuple[str, str]], 
         prompt: str = "Select a directory (number) or 0 to exit: "
@@ -235,10 +589,10 @@ class BookmarkManager:
         if not self._check_bookmarks_exist():
             return
 
-        bookmark_list = self._display_bookmark_menu()
-        selected_path = self._get_user_selection(bookmark_list)
+        bookmark_list = self._get_sorted_bookmark_list()
+        selected_path = self._interactive_select(bookmark_list)
 
-        if selected_path and selected_path != "EXIT":
+        if selected_path:
             print(selected_path)
 
     def open_bookmark(self) -> None:
@@ -246,12 +600,12 @@ class BookmarkManager:
         if not self._check_bookmarks_exist():
             return
 
-        bookmark_list = self._display_bookmark_menu()
-        selected_path = self._get_user_selection(
-            bookmark_list, "Select a directory to open (number) or 0 to exit: "
+        bookmark_list = self._get_sorted_bookmark_list()
+        selected_path = self._interactive_select(
+            bookmark_list, "Select a directory to open", "↑/↓ move, Enter select, 0/q quit"
         )
 
-        if selected_path and selected_path != "EXIT":
+        if selected_path:
             # Check if directory exists
             if not os.path.exists(selected_path):
                 print(f"Directory not found: {selected_path}", file=sys.stderr)
@@ -418,9 +772,10 @@ OPTIONS:
                     - Opens selected directory in platform file manager
                     - Supports macOS (Finder), Linux (xdg-open), Windows (Explorer)
 
-    --go            Navigate to bookmarked directory
-                    - Shows bookmarks in lowercase, sorted alphabetically
-                    - Prompts for number selection
+    --go [name]     Navigate to bookmarked directory
+                    - Interactive menu: ↑/↓ or j/k, type-to-filter, Enter to select
+                    - Number keys jump (multi-digit supported, e.g. 12)
+                    - Optional name: exact or unique partial match
                     - Outputs selected directory path for shell navigation
                     - Used by goto shell function
 
@@ -495,15 +850,25 @@ Platform: Cross-platform (macOS, Linux, Windows)
 """
         print(info_text.strip())
 
-    def go_bookmark(self) -> None:
-        """Navigate to bookmarked directory (same as goto.py functionality)."""
+    def go_bookmark(self, name: Optional[str] = None) -> None:
+        """Navigate to bookmarked directory (same as goto.py functionality).
+
+        Args:
+            name: Optional bookmark name for direct jump (exact or unique partial)
+        """
         if not self._check_bookmarks_exist():
             return
 
-        bookmark_list = self._display_bookmark_menu()
-        selected_path = self._get_user_selection(bookmark_list)
+        if name:
+            selected_path = self._resolve_bookmark_name(name)
+            if selected_path:
+                print(selected_path)
+            return
 
-        if selected_path and selected_path != "EXIT":
+        bookmark_list = self._get_sorted_bookmark_list()
+        selected_path = self._interactive_select(bookmark_list)
+
+        if selected_path:
             print(selected_path)
 
     def backup_bookmarks(self) -> None:
@@ -715,12 +1080,15 @@ def main() -> None:
 
         if len(sys.argv) > 1:
             command = sys.argv[1]
-            if command in commands:
+            if command == "--go":
+                name = sys.argv[2] if len(sys.argv) > 2 else None
+                manager.go_bookmark(name)
+            elif command in commands:
                 commands[command]()
             else:
                 print(f"Unknown option: {command}", file=sys.stderr)
                 print(
-                    "Usage: bookmark [--remove|--list|--open|--go|--debug|--flush|--listall|--backup|--restore|--help]",
+                    "Usage: bookmark [--remove|--list|--open|--go [name]|--debug|--flush|--listall|--backup|--restore|--help]",
                     file=sys.stderr,
                 )
                 sys.exit(1)
