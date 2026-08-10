@@ -5,32 +5,6 @@
 # Repository: https://github.com/hasinhayder/bookomark.py
 # This script should be sourced, not executed directly
 
-# Locate bookmark.py using BOOKMARK_SCRIPT_DIR (set by setup.sh)
-_get_bookmark_script() {
-    if [[ -n "${BOOKMARK_SCRIPT_DIR:-}" ]] && [[ -f "${BOOKMARK_SCRIPT_DIR}/bookmark.py" ]]; then
-        echo "${BOOKMARK_SCRIPT_DIR}/bookmark.py"
-        return 0
-    fi
-
-    if [[ -n "${BASH_SOURCE[0]:-}" ]]; then
-        local this_script_dir
-        this_script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-        if [[ -f "$this_script_dir/bookmark.py" ]]; then
-            echo "$this_script_dir/bookmark.py"
-            return 0
-        fi
-    fi
-
-    if command -v bookmark >/dev/null 2>&1; then
-        echo "bookmark"
-        return 0
-    fi
-
-    echo "" >&2
-    echo "Error: Could not locate bookmark.py. Set BOOKMARK_SCRIPT_DIR in your shell config." >&2
-    return 1
-}
-
 _goto_resolve_cmd() {
     # Sets global _GOTO_CMD to either "bookmark" or "python3 /path/bookmark.py"
     _GOTO_CMD=""
