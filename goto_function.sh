@@ -5,9 +5,10 @@
 # Repository: https://github.com/hasinhayder/bookomark.py
 # This script should be sourced, not executed directly
 
+# Resolve the command used to invoke bookmark.py. Prints either "bookmark"
+# (when found on PATH) or 'python3 "/path/to/bookmark.py"' to stdout; returns
+# non-zero on failure. Uses no global state — callers capture stdout.
 _goto_resolve_cmd() {
-    # Sets global _GOTO_CMD to either "bookmark" or "python3 /path/bookmark.py"
-    _GOTO_CMD=""
     local script_dir=""
 
     if [[ -n "${BOOKMARK_SCRIPT_DIR:-}" ]] && [[ -f "${BOOKMARK_SCRIPT_DIR}/bookmark.py" ]]; then
@@ -21,7 +22,7 @@ _goto_resolve_cmd() {
 
     if [[ -z "$script_dir" ]]; then
         if command -v bookmark >/dev/null 2>&1; then
-            _GOTO_CMD="bookmark"
+            echo "bookmark"
             return 0
         elif [[ -f ./bookmark.py ]]; then
             script_dir="."
@@ -31,7 +32,7 @@ _goto_resolve_cmd() {
         fi
     fi
 
-    _GOTO_CMD="python3 \"$script_dir/bookmark.py\""
+    echo "python3 \"$script_dir/bookmark.py\""
     return 0
 }
 
@@ -41,22 +42,23 @@ _goto_resolve_cmd() {
 #   goto <name>       Jump directly (exact or unique partial name)
 #   goto -h|--help    Show help
 goto() {
-    local selected_path arg
+    local selected_path arg cmd
 
     if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
         goto_help
         return 0
     fi
 
-    _goto_resolve_cmd || return 1
+    cmd=$(_goto_resolve_cmd) || return 1
 
     if [[ -n "${1:-}" ]]; then
-        # Direct jump by name (pass remaining args as the name)
+        # Direct jump by name. $arg is single-quoted so eval expands it as one
+        # token — this supports bookmark names that contain spaces.
         arg="$1"
-        selected_path=$(eval $_GOTO_CMD --go "$arg" < /dev/tty 2>/dev/tty)
+        selected_path=$(eval "$cmd" --go '"$arg"' < /dev/tty 2>/dev/tty)
     else
         # Interactive selection
-        selected_path=$(eval $_GOTO_CMD --go < /dev/tty 2>/dev/tty)
+        selected_path=$(eval "$cmd" --go < /dev/tty 2>/dev/tty)
     fi
 
     if [[ -z "$selected_path" ]]; then
@@ -78,14 +80,22 @@ goto() {
 # Bash tab completion for bookmark names
 if [[ -n "${BASH_VERSION:-}" ]] && [[ $- == *i* ]] && type complete >/dev/null 2>&1; then
     _goto_completion() {
-        local cur names bookmarks_file
+        local cur bookmarks_file name
         COMPREPLY=()
         cur="${COMP_WORDS[COMP_CWORD]}"
         bookmarks_file="${HOME}/.dir-bookmarks.txt"
-        if [[ -f "$bookmarks_file" ]]; then
-            names=$(grep -v "^#" "$bookmarks_file" | grep "|" | cut -d"|" -f1 | sort -u)
-            COMPREPLY=($(compgen -W "$names" -- "$cur"))
-        fi
+        [[ -f "$bookmarks_file" ]] || return 0
+
+        local -a matches=()
+        while IFS= read -r name; do
+            [[ -z "$name" ]] && continue
+            if [[ "$name" == "$cur"* ]]; then
+                # Escape spaces so readline treats each name as a single token
+                matches+=("${name// /\\ }")
+            fi
+        done < <(grep -v "^#" "$bookmarks_file" | grep "|" | cut -d"|" -f1 | sort -u)
+
+        COMPREPLY=("${matches[@]}")
     }
     complete -F _goto_completion goto
 fi
