@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bookmark.py Documentation // navigate faster</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;900&family=Space+Grotesk:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="prompt-symbol">$</span>
+                <span class="brand-text">bookmark.py</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html#home" class="doc-link">← Home</a>
+                <a href="#installation" data-section="installation">Installation</a>
+                <a href="#usage" data-section="usage">Usage</a>
+                <a href="#commands" data-section="commands">Commands</a>
+                <a href="#configuration" data-section="configuration">Configuration</a>
+                <a href="#examples" data-section="examples">Examples</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Documentation Header -->
+    <section class="doc-hero">
+        <div class="doc-container">
+            <div class="doc-header">
+                <div class="doc-breadcrumb">
+                    <span class="breadcrumb-item">home</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item">documentation</span>
+                </div>
+                <h1 class="doc-title">
+                    <span class="title-line">Documentation</span>
+                    <span class="title-line">v3.0 Manual</span>
+                </h1>
+                <p class="doc-subtitle">Complete guide to bookmark.py - Terminal directory navigation made simple</p>
+                <div class="doc-meta">
+                    <span class="version">Version 3.0.0</span>
+                    <span class="separator">•</span>
+                    <span class="updated">Last updated: December 2024</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Navigation -->
+    <section class="quick-nav">
+        <div class="doc-container">
+            <div class="quick-nav-grid">
+                <a href="#installation" class="quick-nav-card">
+                    <div class="quick-nav-icon">⚙</div>
+                    <div class="quick-nav-content">
+                        <h3>Installation</h3>
+                        <p>Get bookmark.py running in seconds</p>
+                    </div>
+                </a>
+                <a href="#usage" class="quick-nav-card">
+                    <div class="quick-nav-icon">🚀</div>
+                    <div class="quick-nav-content">
+                        <h3>Basic Usage</h3>
+                        <p>Learn the essential commands</p>
+                    </div>
+                </a>
+                <a href="#commands" class="quick-nav-card">
+                    <div class="quick-nav-icon">💻</div>
+                    <div class="quick-nav-content">
+                        <h3>Commands</h3>
+                        <p>Complete command reference</p>
+                    </div>
+                </a>
+                <a href="#configuration" class="quick-nav-card">
+                    <div class="quick-nav-icon">⚡</div>
+                    <div class="quick-nav-content">
+                        <h3>Configuration</h3>
+                        <p>Customize your experience</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="doc-section" id="installation">
+        <div class="doc-container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">01</span>
+                    Installation
+                </h2>
+                <p class="section-subtitle">Get bookmark.py up and running on your system</p>
+            </div>
+
+            <div class="doc-content">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-controls">
+                            <span class="control close"></span>
+                            <span class="control minimize"></span>
+                            <span class="control maximize"></span>
+                        </div>
+                        <div class="terminal-title">bash — installation</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="terminal-line">
+                            <span class="prompt">$</span>
+                            <span class="command">git clone https://github.com/hasinhayder/bookmark.py.git</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="output">Cloning into 'bookmark.py'...</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="prompt">$</span>
+                            <span class="command">cd bookmark.py</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="prompt">$</span>
+                            <span class="command">chmod +x install.sh</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="prompt">$</span>
+                            <span class="command">./install.sh</span>
+                        </div>
+                        <div class="output-block">
+                            <div class="output-line">✓ Python 3.6+ detected</div>
+                            <div class="output-line">✓ Shell: zsh</div>
+                            <div class="output-line">✓ Backing up .zshrc</div>
+                            <div class="output-line">✓ Adding to PATH</div>
+                            <div class="output-line success">✓ Installation complete!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="requirements">
+                    <h3>System Requirements</h3>
+                    <div class="requirements-grid">
+                        <div class="requirement-item">
+                            <div class="requirement-icon">🐍</div>
+                            <div class="requirement-content">
+                                <h4>Python 3.6+</h4>
+                                <p>Modern Python installation required</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <div class="requirement-icon">🐚</div>
+                            <div class="requirement-content">
+                                <h4>Unix Shell</h4>
+                                <p>Bash, Zsh, or Fish compatible</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <div class="requirement-icon">📦</div>
+                            <div class="requirement-content">
+                                <h4>Git</h4>
+                                <p>For cloning and installation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage Section -->
+    <section class="doc-section" id="usage">
+        <div class="doc-container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">02</span>
+                    Basic Usage
+                </h2>
+                <p class="section-subtitle">Learn the fundamentals of bookmark.py</p>
+            </div>
+
+            <div class="doc-content">
+                <div class="usage-example">
+                    <h3>Adding Bookmarks</h3>
+                    <p>Navigate to any directory and add it as a bookmark with a simple command:</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language">bash</span>
+                            <button class="copy-btn" data-copy="cd ~/projects/my-awesome-project
+bookmark">Copy</button>
+                        </div>
+                        <div class="code-content">
+                            <pre><code>cd ~/projects/my-awesome-project
+bookmark</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="usage-example">
+                    <h3>Listing Bookmarks</h3>
+                    <p>View all your saved bookmarks with their paths:</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language">bash</span>
+                            <button class="copy-btn" data-copy="bookmark --list">Copy</button>
+                        </div>
+                        <div class="code-content">
+                            <pre><code>$ bookmark --list
+1. awesome → /Users/username/projects/my-awesome-project
+2. config → /Users/username/.config
+3. downloads → /Users/username/Downloads</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="usage-example">
+                    <h3>Navigating to Bookmarks</h3>
+                    <p>Jump to any bookmarked directory instantly:</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language">bash</span>
+                            <button class="copy-btn" data-copy="bookmark --go awesome">Copy</button>
+                        </div>
+                        <div class="code-content">
+                            <pre><code>$ bookmark --go awesome
+📁 Jumped to: /Users/username/projects/my-awesome-project</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="usage-example">
+                    <h3>Quick Navigation</h3>
+                    <p>Use numbers for even faster navigation:</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language">bash</span>
+                            <button class="copy-btn" data-copy="bookmark --go 1">Copy</button>
+                        </div>
+                        <div class="code-content">
+                            <pre><code>$ bookmark --go 1
+📁 Jumped to: /Users/username/projects/my-awesome-project</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Section -->
+    <section class="doc-section" id="commands">
+        <div class="doc-container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">03</span>
+                    Command Reference
+                </h2>
+                <p class="section-subtitle">Complete list of bookmark.py commands</p>
+            </div>
+
+            <div class="doc-content">
+                <div class="commands-table">
+                    <div class="table-header">
+                        <div class="col-command">Command</div>
+                        <div class="col-description">Description</div>
+                        <div class="col-example">Example</div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col-command"><code>bookmark</code></div>
+                        <div class="col-description">Add current directory as bookmark</div>
+                        <div class="col-example"><code>bookmark</code></div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col-command"><code>bookmark --list</code></div>
+                        <div class="col-description">List all bookmarks</div>
+                        <div class="col-example"><code>bookmark --list</code></div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col-command"><code>bookmark --listall</code></div>
+                        <div class="col-description">List all bookmarks including system ones</div>
+                        <div class="col-example"><code>bookmark --listall</code></div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col-command"><code>bookmark --go [name]</code></div>
+                        <div class="col-description">Navigate to bookmark</div>
+                        <div class="col-example"><code>bookmark --go project</code></div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col-command"><code>bookmark --open [name]</code></div>
+                        <div class="col-description">Open bookmark in file manager</div>
+                        <div class="col-example"><code>bookmark --open project</code></div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col-command"><code>bookmark --remove [name]</code></div>
+                        <div class="col-description">Remove a bookmark</div>
+                        <div class="col-example"><code>bookmark --remove old-project</code></div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col-command"><code>bookmark --debug</code></div>
+                        <div class="col-description">Show debug information</div>
+                        <div class="col-example"><code>bookmark --debug</code></div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col-command"><code>bookmark --flush</code></div>
+                        <div class="col-description">Clear all bookmarks</div>
+                        <div class="col-example"><code>bookmark --flush</code></div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col-command"><code>bookmark --backup</code></div>
+                        <div class="col-description">Backup bookmarks to file</div>
+                        <div class="col-example"><code>bookmark --backup</code></div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col-command"><code>bookmark --restore</code></div>
+                        <div class="col-description">Restore bookmarks from backup</div>
+                        <div class="col-example"><code>bookmark --restore</code></div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col-command"><code>bookmark --help</code></div>
+                        <div class="col-description">Show help message</div>
+                        <div class="col-example"><code>bookmark --help</code></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configuration Section -->
+    <section class="doc-section" id="configuration">
+        <div class="doc-container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">04</span>
+                    Configuration
+                </h2>
+                <p class="section-subtitle">Customize bookmark.py to your workflow</p>
+            </div>
+
+            <div class="doc-content">
+                <div class="config-example">
+                    <h3>Configuration File</h3>
+                    <p>bookmark.py stores configuration in <code>~/.bookmarkrc</code>:</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language">ini</span>
+                            <button class="copy-btn" data-copy="[display]
+show_numbers = true
+max_path_length = 50
+
+[aliases]
+proj = &quot;bookmark --go project&quot;
+docs = &quot;bookmark --go documentation&quot;
+
+[colors]
+enabled = true
+primary = green
+accent = blue">Copy</button>
+                        </div>
+                        <div class="code-content">
+                            <pre><code>[display]
+show_numbers = true
+max_path_length = 50
+
+[aliases]
+proj = "bookmark --go project"
+docs = "bookmark --go documentation"
+
+[colors]
+enabled = true
+primary = green
+accent = blue</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-options">
+                    <h3>Configuration Options</h3>
+                    <div class="options-grid">
+                        <div class="option-item">
+                            <div class="option-header">
+                                <h4><code>show_numbers</code></h4>
+                                <span class="option-type">boolean</span>
+                            </div>
+                            <p>Show bookmark numbers in list output</p>
+                            <div class="option-values">
+                                <span class="value">true</span> (default) •
+                                <span class="value">false</span>
+                            </div>
+                        </div>
+
+                        <div class="option-item">
+                            <div class="option-header">
+                                <h4><code>max_path_length</code></h4>
+                                <span class="option-type">integer</span>
+                            </div>
+                            <p>Maximum characters to show for paths</p>
+                            <div class="option-values">
+                                <span class="value">50</span> (default) •
+                                <span class="value">any number</span>
+                            </div>
+                        </div>
+
+                        <div class="option-item">
+                            <div class="option-header">
+                                <h4><code>auto_save</code></h4>
+                                <span class="option-type">boolean</span>
+                            </div>
+                            <p>Automatically save bookmarks after changes</p>
+                            <div class="option-values">
+                                <span class="value">true</span> (default) •
+                                <span class="value">false</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section class="doc-section" id="examples">
+        <div class="doc-container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">05</span>
+                    Real-World Examples
+                </h2>
+                <p class="section-subtitle">Practical workflows with bookmark.py</p>
+            </div>
+
+            <div class="doc-content">
+                <div class="example-workflow">
+                    <h3>Developer Workflow</h3>
+                    <p>A typical day in the life of a developer using bookmark.py:</p>
+
+                    <div class="workflow-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="code-block">
+                                    <div class="code-content">
+                                        <pre><code>cd ~/projects/frontend
+bookmark</code></pre>
+                                    </div>
+                                </div>
+                                <p>Add your main project directory</p>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="code-block">
+                                    <div class="code-content">
+                                        <pre><code>cd ~/projects/backend/api
+bookmark</code></pre>
+                                    </div>
+                                </div>
+                                <p>Add the API backend directory</p>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="code-block">
+                                    <div class="code-content">
+                                        <pre><code>bookmark --list
+1. frontend → /Users/username/projects/frontend
+2. api → /Users/username/projects/backend/api</code></pre>
+                                    </div>
+                                </div>
+                                <p>List all your project bookmarks</p>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <div class="code-block">
+                                    <div class="code-content">
+                                        <pre><code>bookmark --go 1
+# or
+bookmark --go frontend</code></pre>
+                                    </div>
+                                </div>
+                                <p>Quickly jump to any project</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-workflow">
+                    <h3>System Administration</h3>
+                    <p>Quick access to common system directories:</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language">bash</span>
+                            <button class="copy-btn" data-copy="cd /etc/nginx/sites-available
+bookmark
+
+cd /var/log
+bookmark
+
+cd /opt/app
+bookmark
+
+bookmark --list
+1. nginx-config → /etc/nginx/sites-available
+2. logs → /var/log
+3. apps → /opt/app">Copy</button>
+                        </div>
+                        <div class="code-content">
+                            <pre><code>cd /etc/nginx/sites-available
+bookmark
+
+cd /var/log
+bookmark
+
+cd /opt/app
+bookmark
+
+bookmark --list
+1. nginx-config → /etc/nginx/sites-available
+2. logs → /var/log
+3. apps → /opt/app</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting Section -->
+    <section class="doc-section" id="troubleshooting">
+        <div class="doc-container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">06</span>
+                    Troubleshooting
+                </h2>
+                <p class="section-subtitle">Common issues and solutions</p>
+            </div>
+
+            <div class="doc-content">
+                <div class="faq-section">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h4>Command not found: bookmark</h4>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>This usually means bookmark.py isn't in your PATH. Try these solutions:</p>
+                            <div class="code-block">
+                                <div class="code-content">
+                                    <pre><code># Check if bookmark.py is in your PATH
+which bookmark
+
+# If not found, add it to your shell config
+echo 'export PATH="$PATH:/path/to/bookmark.py"' >> ~/.zshrc
+source ~/.zshrc</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h4>Bookmarks not persisting</h4>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Check file permissions for the bookmark storage:</p>
+                            <div class="code-block">
+                                <div class="code-content">
+                                    <pre><code># Check bookmark file permissions
+ls -la ~/.bookmark.py
+
+# Fix permissions if needed
+chmod 644 ~/.bookmark.py</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h4>Shell completion not working</h4>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Enable shell completion by adding this to your shell config:</p>
+                            <div class="code-block">
+                                <div class="code-content">
+                                    <pre><code># For Zsh
+echo 'source ~/.bookmark.py/completion.zsh' >> ~/.zshrc
+
+# For Bash
+echo 'source ~/.bookmark.py/completion.bash' >> ~/.bashrc</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>bookmark.py</h4>
+                <p>Terminal directory navigation made simple</p>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="https://github.com/hasinhayder/bookmark.py">GitHub</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="https://github.com/hasinhayder/bookmark.py/issues">Report Issues</a></li>
+                    <li><a href="https://github.com/hasinhayder/bookmark.py/discussions">Discussions</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 bookmark.py. Open source under MIT license.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Documentation-specific interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Copy to clipboard functionality
+            const copyButtons = document.querySelectorAll('.copy-btn');
+
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const codeToCopy = this.getAttribute('data-copy');
+
+                    navigator.clipboard.writeText(codeToCopy).then(() => {
+                        const originalText = this.textContent;
+                        this.textContent = 'Copied!';
+                        this.classList.add('copied');
+
+                        setTimeout(() => {
+                            this.textContent = originalText;
+                            this.classList.remove('copied');
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+                });
+            });
+
+            // FAQ accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const toggle = item.querySelector('.faq-toggle');
+
+                question.addEventListener('click', function() {
+                    const answer = item.querySelector('.faq-answer');
+                    const isOpen = answer.style.display === 'block';
+
+                    // Close all other answers
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.querySelector('.faq-answer').style.display = 'none';
+                            otherItem.querySelector('.faq-toggle').textContent = '+';
+                        }
+                    });
+
+                    // Toggle current answer
+                    answer.style.display = isOpen ? 'none' : 'block';
+                    toggle.textContent = isOpen ? '+' : '−';
+                });
+            });
+
+            // Initialize GSAP animations for documentation
+            if (typeof gsap !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+
+                // Section title animations
+                gsap.fromTo('.section-title',
+                    {
+                        x: -50,
+                        opacity: 0
+                    },
+                    {
+                        x: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        stagger: 0.2,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: '.section-title',
+                            start: 'top 85%'
+                        }
+                    }
+                );
+
+                // Code block animations
+                gsap.fromTo('.code-block',
+                    {
+                        y: 30,
+                        opacity: 0,
+                        scale: 0.95
+                    },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        scale: 1,
+                        duration: 0.6,
+                        stagger: 0.1,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: '.code-block',
+                            start: 'top 80%'
+                        }
+                    }
+                );
+
+                // Quick nav cards animation
+                gsap.fromTo('.quick-nav-card',
+                    {
+                        y: 50,
+                        opacity: 0,
+                        rotation: 2
+                    },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        rotation: 0,
+                        duration: 0.8,
+                        stagger: 0.15,
+                        ease: "back.out(1.7)",
+                        delay: 0.5
+                    }
+                );
+            }
+
+            // Smooth scroll for navigation links
+            const navLinks = document.querySelectorAll('.nav-link[data-section]');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+
+                    if (targetSection) {
+                        if (typeof gsap !== 'undefined') {
+                            gsap.to(window, {
+                                duration: 1,
+                                scrollTo: {
+                                    y: targetSection,
+                                    offsetY: 80
+                                },
+                                ease: "power2.inOut"
+                            });
+                        } else {
+                            targetSection.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        /* Documentation-specific styles */
+        .doc-hero {
+            padding: 8rem 2rem 4rem;
+            background: var(--bg);
+            border-bottom: 1px solid var(--terminal-border);
+        }
+
+        .doc-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .doc-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            color: var(--text-dim);
+            font-family: var(--mono);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-dim);
+        }
+
+        .doc-title {
+            font-family: var(--display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            margin: 0 0 1rem 0;
+            line-height: 1.1;
+        }
+
+        .doc-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin: 0 0 2rem 0;
+            max-width: 600px;
+        }
+
+        .doc-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            font-family: var(--mono);
+        }
+
+        .version {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Quick Navigation */
+        .quick-nav {
+            padding: 4rem 2rem;
+            background: var(--surface);
+        }
+
+        .quick-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .quick-nav-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--terminal-surface);
+            border: 1px solid var(--terminal-border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .quick-nav-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .quick-nav-icon {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .quick-nav-content h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .quick-nav-content p {
+            margin: 0;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Documentation Sections */
+        .doc-section {
+            padding: 6rem 2rem;
+            border-bottom: 1px solid var(--terminal-border);
+        }
+
+        .doc-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: var(--display);
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin: 0 0 1rem 0;
+        }
+
+        .section-number {
+            color: var(--primary);
+            font-size: 1.5rem;
+            background: var(--terminal-surface);
+            border: 1px solid var(--primary);
+            border-radius: 50%;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .doc-content {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--terminal-surface);
+            border: 1px solid var(--terminal-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: var(--terminal-bg);
+            border-bottom: 1px solid var(--terminal-border);
+        }
+
+        .code-language {
+            color: var(--primary);
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: var(--terminal-bg);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--text);
+        }
+
+        .copy-btn.copied {
+            background: var(--text-dim);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            margin: 0;
+            font-family: var(--mono);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-content code {
+            color: var(--text);
+        }
+
+        /* Requirements Grid */
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--terminal-surface);
+            border: 1px solid var(--terminal-border);
+            border-radius: 8px;
+        }
+
+        .requirement-icon {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .requirement-content h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text);
+        }
+
+        .requirement-content p {
+            margin: 0;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Usage Examples */
+        .usage-example {
+            margin-bottom: 3rem;
+        }
+
+        .usage-example h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .usage-example p {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+
+        /* Configuration Options */
+        .options-grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .option-item {
+            padding: 1.5rem;
+            background: var(--terminal-surface);
+            border: 1px solid var(--terminal-border);
+            border-radius: 8px;
+        }
+
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .option-header h4 {
+            margin: 0;
+            color: var(--primary);
+            font-family: var(--mono);
+        }
+
+        .option-type {
+            background: var(--primary);
+            color: var(--terminal-bg);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: var(--mono);
+            font-weight: bold;
+        }
+
+        .option-values {
+            margin-top: 0.5rem;
+            font-family: var(--mono);
+            font-size: 0.9rem;
+        }
+
+        .value {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Workflow Steps */
+        .workflow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: var(--terminal-bg);
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-family: var(--mono);
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content p {
+            margin-top: 1rem;
+            color: var(--text-dim);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .faq-item {
+            background: var(--terminal-surface);
+            border: 1px solid var(--terminal-border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--terminal-bg);
+        }
+
+        .faq-question h4 {
+            margin: 0;
+            color: var(--text);
+        }
+
+        .faq-toggle {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 1.5rem 1.5rem;
+            border-top: 1px solid var(--terminal-border);
+        }
+
+        .faq-answer p {
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .doc-hero {
+                padding: 6rem 1rem 3rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .quick-nav-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .requirements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .workflow-steps {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .doc-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .section-number {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1.2rem;
+            }
+
+            .doc-section {
+                padding: 4rem 1rem;
+            }
+
+            .quick-nav {
+                padding: 3rem 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Commands Table Styles */
+        .commands-table {
+            background: var(--terminal-surface);
+            border: 1px solid var(--terminal-border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            background: var(--terminal-bg);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--terminal-border);
+            font-weight: bold;
+            color: var(--primary);
+            font-family: var(--mono);
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--terminal-border);
+            transition: all 0.3s ease;
+            align-items: center;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .table-row:hover {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .col-command {
+            font-family: var(--mono);
+            font-weight: bold;
+        }
+
+        .col-command code {
+            background: var(--terminal-bg);
+            color: var(--primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .col-description {
+            color: var(--text);
+        }
+
+        .col-example {
+            font-family: var(--mono);
+        }
+
+        .col-example code {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive table styles */
+        @media (max-width: 768px) {
+            .table-header {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .table-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+
+            .table-header > div:not(:first-child)::before {
+                content: attr(data-label);
+                color: var(--primary);
+                font-weight: bold;
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+
+            .col-description::before {
+                content: "Description: ";
+                color: var(--primary);
+                font-weight: bold;
+            }
+
+            .col-example::before {
+                content: "Example: ";
+                color: var(--primary);
+                font-weight: bold;
+            }
+        }
+    </style>
+</body>
+</html>

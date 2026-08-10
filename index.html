@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bookmark.py // navigate faster</title>
+    <meta name="description" content="Bookmark your most-used directories with memorable names and navigate between projects instantly. A minimalist terminal tool for macOS, Linux, and Windows.">
+    <meta property="og:title" content="bookmark.py // navigate faster">
+    <meta property="og:description" content="Jump to any directory in seconds. Bookmark your most-used directories and navigate between projects instantly.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/hasinhayder/bookmark.py">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Ctext x='4' y='23' font-family='monospace' font-size='20' fill='%2300ff88'%3E$%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,14 +33,19 @@
                 <span class="prompt-symbol">$</span>
                 <span class="brand-text">bookmark.py</span>
             </div>
-            <div class="nav-links">
+            <div class="nav-links" id="navLinks">
                 <a href="#features" data-section="features">features</a>
                 <a href="#install" data-section="install">install</a>
                 <a href="#usage" data-section="usage">usage</a>
                 <a href="#commands" data-section="commands">commands</a>
                 <a href="#faq" data-section="faq">faq</a>
-                <a href="https://github.com/hasinhayder/bookomark.py" target="_blank" class="github-link">src/</a>
+                <a href="https://github.com/hasinhayder/bookmark.py" target="_blank" class="github-link">src/</a>
             </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
@@ -59,7 +70,7 @@
                         <span>Get Started</span>
                         <span class="btn-arrow">→</span>
                     </a>
-                    <a href="https://github.com/hasinhayder/bookomark.py" class="btn-secondary">
+                    <a href="https://github.com/hasinhayder/bookmark.py" class="btn-secondary">
                         <span>View on GitHub</span>
                         <span class="btn-arrow">↗</span>
                     </a>
@@ -216,7 +227,7 @@
             <div class="terminal-body">
                 <div class="terminal-line">
                     <span class="prompt">$</span>
-                    <span class="command">git clone https://github.com/hasinhayder/bookomark.py</span>
+                    <span class="command">git clone https://github.com/hasinhayder/bookmark.py</span>
                 </div>
                 <div class="terminal-line">
                     <span class="output">Cloning into 'bookmark.py'...</span>
@@ -421,7 +432,7 @@ $ <span class="keyword">bookmark</span> --flush  <span class="comment"># with au
             <div class="terminal-body">
                 <div class="terminal-line">
                     <span class="prompt">$</span>
-                    <span class="command">wget https://github.com/hasinhayder/bookomark.py/archive/main.zip</span>
+                    <span class="command">wget https://github.com/hasinhayder/bookmark.py/archive/refs/heads/main.zip</span>
                 </div>
                 <div class="terminal-line">
                     <span class="output">→ bookmark.py-main.zip 100%[====>] 50.2KB --.-KB/s</span>
@@ -453,12 +464,12 @@ $ <span class="keyword">bookmark</span> --flush  <span class="comment"># with au
                 Join thousands of developers who navigate faster with bookmark.py
             </p>
             <div class="download-buttons">
-                <a href="https://github.com/hasinhayder/bookomark.py/archive/refs/heads/main.zip" class="download-btn primary">
+                <a href="https://github.com/hasinhayder/bookmark.py/archive/refs/heads/main.zip" class="download-btn primary">
                     <span class="btn-icon">⬇</span>
                     <span class="btn-text">Download ZIP</span>
                     <span class="file-size">50KB</span>
                 </a>
-                <a href="https://github.com/hasinhayder/bookomark.py" class="download-btn secondary">
+                <a href="https://github.com/hasinhayder/bookmark.py" class="download-btn secondary">
                     <span class="btn-icon">⌨</span>
                     <span class="btn-text">Clone Repository</span>
                     <span class="git-hash">git@github</span>
@@ -490,60 +501,60 @@ $ <span class="keyword">bookmark</span> --flush  <span class="comment"># with au
 
         <div class="faq-container">
             <div class="faq-item">
-                <div class="faq-question">
+                <button class="faq-question" aria-expanded="false">
                     <span class="faq-icon">$</span>
                     <h3>What shells does bookmark.py support?</h3>
-                </div>
+                </button>
                 <div class="faq-answer">
                     <p>bookmark.py supports all major shells including Bash, Zsh, and Fish. It automatically detects your shell during installation and configures the appropriate integration.</p>
                 </div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question">
+                <button class="faq-question" aria-expanded="false">
                     <span class="faq-icon">~</span>
                     <h3>Where are my bookmarks stored?</h3>
-                </div>
+                </button>
                 <div class="faq-answer">
                     <p>Bookmarks are stored in <code>~/.dir-bookmarks.txt</code> in your home directory. Each bookmark contains the path and name you assigned, making it easy to edit or share if needed.</p>
                 </div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question">
+                <button class="faq-question" aria-expanded="false">
                     <span class="faq-icon">&gt;</span>
                     <h3>Can I sync bookmarks across machines?</h3>
-                </div>
+                </button>
                 <div class="faq-answer">
                     <p>Yes! You can backup your bookmarks using <code>bookmark --backup</code> which creates a timestamped file. Simply copy this file to your new machine and restore with <code>bookmark --restore</code>.</p>
                 </div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question">
+                <button class="faq-question" aria-expanded="false">
                     <span class="faq-icon">[]</span>
                     <h3>Is bookmark.py fast?</h3>
-                </div>
+                </button>
                 <div class="faq-answer">
                     <p>Extremely! bookmark.py is written in Python and optimized for speed. Navigation is instantaneous, and the entire script is only ~50KB with zero dependencies.</p>
                 </div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question">
+                <button class="faq-question" aria-expanded="false">
                     <span class="faq-icon">#!</span>
                     <h3>Is my data safe?</h3>
-                </div>
+                </button>
                 <div class="faq-answer">
                     <p>Absolutely. bookmark.py creates automatic backups before any changes. All operations are validated, and the tool won't let you accidentally delete important directories or create duplicate bookmarks.</p>
                 </div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question">
+                <button class="faq-question" aria-expanded="false">
                     <span class="faq-icon">*</span>
                     <h3>Can I customize bookmark.py?</h3>
-                </div>
+                </button>
                 <div class="faq-answer">
                     <p>Yes! bookmark.py is open source (MIT license). You can modify the script to add features, change the interface, or integrate with other tools. The code is clean and well-documented.</p>
                 </div>
@@ -571,9 +582,9 @@ $ <span class="keyword">bookmark</span> --flush  <span class="comment"># with au
             </div>
             <div class="footer-section">
                 <h3>SOURCE</h3>
-                <a href="https://github.com/hasinhayder/bookomark.py">GitHub</a>
-                <a href="https://github.com/hasinhayder/bookomark.py/issues">Issues</a>
-                <a href="https://github.com/hasinhayder/bookomark.py/blob/main/LICENSE">License (MIT)</a>
+                <a href="https://github.com/hasinhayder/bookmark.py">GitHub</a>
+                <a href="https://github.com/hasinhayder/bookmark.py/issues">Issues</a>
+                <a href="https://github.com/hasinhayder/bookmark.py/blob/main/LICENSE">License (MIT)</a>
             </div>
             <div class="footer-section">
                 <h3>AUTHOR</h3>
@@ -582,7 +593,7 @@ $ <span class="keyword">bookmark</span> --flush  <span class="comment"># with au
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2024 bookmark.py • MIT License • Made with ♥ for developers</p>
+            <p>© 2026 bookmark.py • MIT License • Made with ♥ for developers</p>
         </div>
     </footer>
 
