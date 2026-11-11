@@ -554,7 +554,9 @@ class BookmarkManager:
             prompt: Prompt message to display
             
         Returns:
-            Optional[Union[str, Tuple[str, str]]]: Selected path, "EXIT", or None
+            Optional[Union[str, Tuple[str, str]]]: Selected path, or None
+                (including when the user chooses 0 to exit without
+                selecting anything)
         """
         try:
             print(prompt, end="", file=sys.stderr)
@@ -565,7 +567,7 @@ class BookmarkManager:
 
             if choice_num == 0:
                 print("Exiting...", file=sys.stderr)
-                return "EXIT"
+                return None
             elif 1 <= choice_num <= len(bookmark_list):
                 return bookmark_list[choice_num - 1][1]  # Return path
             else:
